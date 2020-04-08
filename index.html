@@ -282,7 +282,7 @@ if (b) change_run_button(b);
 		<label for="default-graph-uri">Default Data Set Name (Graph IRI)</label><br />
 		<input type="text" name="default-graph-uri" id="default-graph-uri" value="" size="80"/>
 		<br /><br />
-<label for="message">If you want to query the data through the command line or coding environment, you should use the URL <a href="/sparql">sparql.wikipathways.org/sparql</a>.</label>
+<label for="message">If you want to query the data through the command line or coding environment, you should use the URL <a href="/sparql">sparql.wikipathways.org/sparql</a>. For example SPARQL queries, visit <a href="https://www.wikipathways.org/index.php/Help:WikiPathways_Sparql_queries">WikiPathways SPARQL queries</a></label>
 <br /><br />
 		<label for="query">Query Text</label><br />
              <textarea rows="18" cols="80" name="query" id="query" onchange="javascript:format_select(this)" onkeyup="javascript:format_select(this)">#Find all genes that are present in a particular pathway
@@ -335,7 +335,7 @@ where {
 		<span class="info"><i>(The result can only be sent back to browser, not saved on the server, see <a href="/sparql?help=enable_det">details</a>)</i></span>
 		<br />
 		<br />
-		<input type="submit" name="run" id="run" value="Go"/>
+		<input type="submit" name="run" id="run" value="Run query"/>
 		<input type="reset" value="Reset"/>
 	</fieldset>
 	</form>
