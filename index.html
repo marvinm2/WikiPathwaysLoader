@@ -276,13 +276,27 @@ if (b) change_run_button(b);
 
     <div id="main">
     <br />
-	<form action="" method="get">
+	<form action="/sparql" method="get">
 	<fieldset>
 		<label for="default-graph-uri">Default Data Set Name (Graph IRI)</label><br />
 		<input type="text" name="default-graph-uri" id="default-graph-uri" value="" size="80"/>
 		<br /><br />
+<label for="message">If you want to query the data through the command line or coding environment, you should use the URL <a href="/sparql">sparql.wikipathways.org/sparql</a>.</label>
+<br /><br />
 		<label for="query">Query Text</label><br />
-             <textarea rows="18" cols="80" name="query" id="query" onchange="javascript:format_select(this)" onkeyup="javascript:format_select(this)">select distinct ?Concept where {[] a ?Concept} LIMIT 100</textarea>
+             <textarea rows="18" cols="80" name="query" id="query" onchange="javascript:format_select(this)" onkeyup="javascript:format_select(this)">#Find all genes that are present in a particular pathway
+PREFIX wp:      &lt;http://vocabularies.wikipathways.org/wp#&gt;
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt;
+PREFIX dcterms: &lt;http://purl.org/dc/terms/&gt;
+select distinct (str(?pathwayTitle) as ?PathwayTitle) ?pathway (str(?label) as ?geneProduct) 
+where {    
+	?geneProduct a wp:GeneProduct . #To select only geneProducts
+	?geneProduct rdfs:label ?label .   
+	?geneProduct dcterms:isPartOf ?pathway .   
+	?pathway a wp:Pathway ; dc:title ?pathwayTitle .  
+	?pathway dcterms:identifier "WP1560"^^xsd:string . #Filter for WP1560
+}
+</textarea>
 		<br /><br />
 		<span class="info"><i>(Security restrictions of this server do not allow you to retrieve remote RDF data, see <a href="/sparql?help=enable_sponge">details</a>.)</i></span>
 		<br />
