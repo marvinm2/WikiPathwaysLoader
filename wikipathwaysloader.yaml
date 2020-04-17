@@ -1,0 +1,46 @@
+---
+
+
+kind: Template
+apiVersion: v1
+metadata:
+  name: wikipathwaysloader
+labels:
+  template: wikipathwaysloader
+
+parameters:
+
+- name: LOADER_REGISTRY
+  value: bigcatum
+- name: LOADER_IMAGE
+  value: wploader
+- name: LOADER_TARGET_CLAIM_NAME
+  value: aopwiki-target-claim
+
+objects:
+
+- kind: Job
+  apiVersion: batch/v1
+  metadata:
+    name: wikipathwaysloader
+
+
+
+  spec:
+    template:
+      metadata:
+        name: wikipathwaysloader
+      spec:
+        containers:
+        - image: ${LOADER_REGISTRY}/${LOADER_IMAGE}
+          name: wikipathwaysloader
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: wikipathways-target
+            mountPath: /wikipathwaysdata
+        volumes:
+        - name: wikipathways-target
+          persistentVolumeClaim:
+            claimName: ${LOADER_TARGET_CLAIM_NAME}
+  
+        restartPolicy: Never
