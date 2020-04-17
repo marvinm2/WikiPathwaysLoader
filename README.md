@@ -2,4 +2,4 @@
 
 This repository contains files for the monthly update of the WikiPathways SPARQL endpoint, which runs in Openshift using the openlink/virtuoso-opensource-7 Docker image. 
 
-![WikiPathways logo](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png?raw=true=100x100)
+<img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194">
