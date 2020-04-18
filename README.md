@@ -116,7 +116,7 @@ To enter the OpenLink Virtuoso Interactive SQL, enter:
 Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time and requires you to enter the DBA password:
 
     RDF_GLOBAL_RESET();
-    
+
     DELETE FROM load_list WHERE ll_graph = 'wikipathways.org';
 
 ## Step 13 - Loading the prefixes and permissions
@@ -160,9 +160,12 @@ To check the status of the loaded data, the `ll_status` in the `load_list` shoul
     select * from DB.DBA.load_list;
 
 ## Step 15 - Quit the SQL and pod
+To quit the SQL:
 
     quit;
-    
+
+To exit the pod:
+
     exit
 
 
