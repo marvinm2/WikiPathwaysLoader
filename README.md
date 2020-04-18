@@ -188,7 +188,7 @@ The last step of this protocol is the testing whether the loading of new data wo
 ### Step 16A - Perform SPARQL queries
 Run the SPARQL queries below to count the content of the RDF and check if the data loaded is consistent with previous releases. 
 
-#### Query #1 - Metadata ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+%3Fdataset+%28str%28%3FtitleLit%29+as+%3Ftitle%29+%3Fdate+%3Flicense+WHERE+%7B%3Fdataset+a+void%3ADataset+%3B+dcterms%3Atitle+%3FtitleLit+%3B+dcterms%3Alicense+%3Flicense+%3B+pav%3AcreatedOn+%3Fdate+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query){:target="_blank"})
+#### Query #1 - Metadata (<a href="http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+%3Fdataset+%28str%28%3FtitleLit%29+as+%3Ftitle%29+%3Fdate+%3Flicense+WHERE+%7B%3Fdataset+a+void%3ADataset+%3B+dcterms%3Atitle+%3FtitleLit+%3B+dcterms%3Alicense+%3Flicense+%3B+pav%3AcreatedOn+%3Fdate+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query" target="_blank">Run query</a>)
 Use the next query to validate that the right dataset is loaded. It should normally indicate the 10th of the current month, assuming this protocol is executed after the 10th day of the month.
 
 ```sparql
