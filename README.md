@@ -25,7 +25,6 @@ Download these files or clone this repository with the following command:
 This folder is best to create in the same directory as all files from this GitHub repository. 
 
 `mkdir data`
-
 `cd data`
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
