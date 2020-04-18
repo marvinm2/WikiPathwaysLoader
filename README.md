@@ -23,15 +23,15 @@ For this process of creating the Docker image and using it in Openshift, the fol
 - [Dockerfile](https://github.com/marvinm2/WikiPathwaysloader/blob/master/Dockerfile)
 - [docker-entrypoint.sh](https://github.com/marvinm2/WikiPathwaysloader/blob/master/docker-entrypoint.sh)
 - [wikipathwaysloader.yaml](https://github.com/marvinm2/WikiPathwaysloader/blob/master/wikipathwaysloader.yaml)
+- [/data/PathwayOntology.ttl](https://github.com/marvinm2/WikiPathwaysLoader/blob/master/data/PathwayOntology.ttl)
 
 Download these files or clone this repository with the following command:
 
     git clone http://github.com/marvinm2/WikiPathwaysloader.git
 
-## Step 3 - Create a folder, enter it, and store the data
-This folder is best to create in the same directory as all files from this GitHub repository. 
+## Step 3 - Enter the folder called 'data'
+This folder will be used to store all Turtle files, and already includes the `PathwayOntology.ttl` file. The folder should be located in the same location as the other required files mentioned in step 2.
 
-    mkdir data
     cd data
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
