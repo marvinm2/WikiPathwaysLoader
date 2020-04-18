@@ -175,5 +175,92 @@ To exit the pod:
 
     exit
 
+## Step 16 - Test if everything went well
+
+The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). The testing comprises of two steps:
+
+### Step 16A - Perform SPARQL queries
+Perform the SPARQL queries below to count the content of the RDF and check if the data loaded is consistent with previous releases. 
+
+#### Query #1 - Metadata
+Use the next query to validate that the right dataset is loaded.
+
+    SELECT DISTINCT ?dataset (str(?titleLit) as ?title) ?date ?license 
+    WHERE {
+       ?dataset a void:Dataset ;
+       dcterms:title ?titleLit ;
+       dcterms:license ?license ;
+       pav:createdOn ?date .
+     }
+
+The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts]() spreadsheet.
+
+#### Query #2 - Count of Pathways Loaded 
+
+    SELECT DISTINCT count(?pathwayRDF) as ?pathwayCount
+    WHERE {
+	    ?pathwayRDF a wp:Pathway .
+    } 
+
+#### Query #3 - Count total amount of DataNodes
+
+	SELECT DISTINCT count(?dataNodes) as ?DataNodeCount
+    WHERE {
+		?dataNodes a wp:DataNode .
+ 	}
+
+#### Query #4 - Count of GeneProduct Nodes 
+
+    SELECT DISTINCT count(?geneProduct) as ?GeneProductCount
+    WHERE {
+	    ?geneProduct a wp:GeneProduct .
+    }
+
+#### Query #5 - Count of Protein Nodes 
+
+    SELECT DISTINCT count(?protein) as ?ProteinCount
+    WHERE {
+	    ?protein a wp:Protein .
+    }
+
+#### Query #6 - Count of Metabolites 
+
+	SELECT DISTINCT count(?Metabolite) as ?MetaboliteCount
+    WHERE {
+		?Metabolite a wp:Metabolite .
+    }
+
+#### Query #7 - Count of all Interactions in WikiPathways 
+
+    SELECT DISTINCT count(?Interaction) as ?InteractionCount
+    WHERE {
+	    ?Interaction a wp:Interaction .
+    }
+
+
+### Step 16B - Test federated SPARQL query
+Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
+
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX up:<http://purl.uniprot.org/core/>
+    PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX cco: <http://rdf.ebi.ac.uk/terms/chembl#>
+    PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+
+    SELECT DISTINCT ?drugMechanism ?ChEMBLTarget
+    WHERE {
+    SERVICE <https://www.ebi.ac.uk/rdf/services/chembl/sparql>
+    {
+        ?drugMechanism a cco:Mechanism ;
+    	cco:hasMolecule ?ChEMBLCompound ;
+    	cco:hasTarget ?ChEMBLTarget .
+    }} LIMIT 100
+
+
+
+
+
+
+
 
 
