@@ -9,7 +9,8 @@ Every month there is a new data release by WikiPathways, all of which are stored
 ## Step 1 - Check if the RDF generation was done correctly
 Check the sizes of the files in the RDF folder of the new set on [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) and whether they are of similar size, or slightly larger than the sizes shown in the screenshot below.
 
-<img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194">
+placeholder
+
 
 ## Step 2 - Clone this repository or download the necessary files
 For this process of creating the Docker image and using it in Openshift, the following files are required:
