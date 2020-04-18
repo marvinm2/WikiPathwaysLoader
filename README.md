@@ -15,7 +15,7 @@ The requirements for updating the WikiPathwys SPARQL endpoint with this protocol
 ## Step 1 - Check if the RDF generation was done correctly
 Check the sizes of the files in the RDF folder of the new set on [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) and whether they are of similar size, or slightly larger than the sizes shown in the screenshot below.
 
-placeholder
+<img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/datawikipathways.png">
 
 
 ## Step 2 - Clone this repository or download the necessary files
