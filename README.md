@@ -20,9 +20,9 @@ Check the sizes of the files in the RDF folder of the new set on [data.wikipathw
 
 ## Step 2 - Clone this repository or download the necessary files
 For this process of creating the Docker image and using it in Openshift, the following files are required:
-- [Dockerfile]()
-- [docker-entrypoint.sh]()
-- [wikipathwaysloader.yaml]()
+- [Dockerfile](https://github.com/marvinm2/WikiPathwaysloader/blob/master/Dockerfile)
+- [docker-entrypoint.sh](https://github.com/marvinm2/WikiPathwaysloader/blob/master/docker-entrypoint.sh)
+- [wikipathwaysloader.yaml](https://github.com/marvinm2/WikiPathwaysloader/blob/master/wikipathwaysloader.yaml)
 
 Download these files or clone this repository with the following command:
 
