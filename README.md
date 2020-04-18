@@ -183,90 +183,97 @@ To exit the pod:
 
 ## Step 16 - Test if everything went well
 
-The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). The testing comprises of two steps:
+The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries by pasting the queries below in the SPARQL endpoint and click `Run query`. Alternatively, click the `Run query` hyperlink after each query title listed below. The testing comprises of two steps:
 
 ### Step 16A - Perform SPARQL queries
-Perform the SPARQL queries below to count the content of the RDF and check if the data loaded is consistent with previous releases. 
+Run the SPARQL queries below to count the content of the RDF and check if the data loaded is consistent with previous releases. 
 
-#### Query #1 - Metadata
-Use the next query to validate that the right dataset is loaded.
+#### Query #1 - Metadata ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+%3Fdataset+%28str%28%3FtitleLit%29+as+%3Ftitle%29+%3Fdate+%3Flicense+WHERE+%7B%3Fdataset+a+void%3ADataset+%3B+dcterms%3Atitle+%3FtitleLit+%3B+dcterms%3Alicense+%3Flicense+%3B+pav%3AcreatedOn+%3Fdate+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
+Use the next query to validate that the right dataset is loaded. It should normally indicate the 10th of the current month, assuming this protocol is executed after the 10th day of the month.
 
-    SELECT DISTINCT ?dataset (str(?titleLit) as ?title) ?date ?license 
-    WHERE {
-       ?dataset a void:Dataset ;
-       dcterms:title ?titleLit ;
-       dcterms:license ?license ;
-       pav:createdOn ?date .
-     }
+```sparql
+SELECT DISTINCT ?dataset (str(?titleLit) as ?title) ?date ?license 
+WHERE {
+   ?dataset a void:Dataset ;
+   dcterms:title ?titleLit ;
+   dcterms:license ?license ;
+   pav:createdOn ?date .
+ }
+ ```
 
-The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months.
+The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF.
 
-#### Query #2 - Count of Pathways Loaded 
+#### Query #2 - Count of Pathways Loaded ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3FpathwayRDF%29+as+%3FpathwayCount+WHERE+%7B%3FpathwayRDF+a+wp%3APathway+.%7D+&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-    SELECT DISTINCT count(?pathwayRDF) as ?pathwayCount
-    WHERE {
-	    ?pathwayRDF a wp:Pathway .
-    } 
+```sparql
+SELECT DISTINCT count(?pathwayRDF) as ?pathwayCount
+WHERE {
+    ?pathwayRDF a wp:Pathway .
+} 
+```
 
-#### Query #3 - Count total amount of DataNodes
+#### Query #3 - Count total amount of DataNodes ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3FdataNodes%29+as+%3FDataNodeCount+WHERE+%7B%3FdataNodes+a+wp%3ADataNode+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-	SELECT DISTINCT count(?dataNodes) as ?DataNodeCount
-    WHERE {
-		?dataNodes a wp:DataNode .
- 	}
+```sparql
+SELECT DISTINCT count(?dataNodes) as ?DataNodeCount
+WHERE {
+    ?dataNodes a wp:DataNode .
+}
+```
 
-#### Query #4 - Count of GeneProduct Nodes 
+#### Query #4 - Count of GeneProduct Nodes ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3FgeneProduct%29+as+%3FGeneProductCount+WHERE+%7B%3FgeneProduct+a+wp%3AGeneProduct+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-    SELECT DISTINCT count(?geneProduct) as ?GeneProductCount
-    WHERE {
-	    ?geneProduct a wp:GeneProduct .
-    }
+```sparql
+SELECT DISTINCT count(?geneProduct) as ?GeneProductCount
+WHERE {
+    ?geneProduct a wp:GeneProduct .
+}
+```
 
-#### Query #5 - Count of Protein Nodes 
+#### Query #5 - Count of Protein Nodes ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3Fprotein%29+as+%3FProteinCount+WHERE+%7B%3Fprotein+a+wp%3AProtein+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-    SELECT DISTINCT count(?protein) as ?ProteinCount
-    WHERE {
-	    ?protein a wp:Protein .
-    }
+```sparql
+SELECT DISTINCT count(?protein) as ?ProteinCount
+WHERE {
+    ?protein a wp:Protein .
+}
+```
 
-#### Query #6 - Count of Metabolites 
+#### Query #6 - Count of Metabolites ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3FMetabolite%29+as+%3FMetaboliteCount+WHERE+%7B%3FMetabolite+a+wp%3AMetabolite+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-	SELECT DISTINCT count(?Metabolite) as ?MetaboliteCount
-    WHERE {
-		?Metabolite a wp:Metabolite .
-    }
+```sparql
+SELECT DISTINCT count(?Metabolite) as ?MetaboliteCount
+WHERE {
+    ?Metabolite a wp:Metabolite .
+}
+```
 
-#### Query #7 - Count of all Interactions in WikiPathways 
+#### Query #7 - Count of all Interactions in WikiPathways ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=SELECT+DISTINCT+count%28%3FInteraction%29+as+%3FInteractionCount+WHERE+%7B%3FInteraction+a+wp%3AInteraction+.%7D&format=text%2Fhtml&timeout=0&debug=on&run=Run+query))
 
-    SELECT DISTINCT count(?Interaction) as ?InteractionCount
-    WHERE {
-	    ?Interaction a wp:Interaction .
-    }
+```sparql
+SELECT DISTINCT count(?Interaction) as ?InteractionCount
+WHERE {
+    ?Interaction a wp:Interaction .
+}
+```
 
 
-### Step 16B - Test federated SPARQL query
+### Step 16B - Test federated SPARQL query ([Run query](http://sparql.wikipathways.org/sparql?default-graph-uri=&query=PREFIX+skos%3A+%3Chttp%3A%2F%2Fwww.w3.org%2F2004%2F02%2Fskos%2Fcore%23%3E%0D%0APREFIX+up%3A%3Chttp%3A%2F%2Fpurl.uniprot.org%2Fcore%2F%3E%0D%0APREFIX+rdf%3A%3Chttp%3A%2F%2Fwww.w3.org%2F1999%2F02%2F22-rdf-syntax-ns%23%3E%0D%0APREFIX+cco%3A+%3Chttp%3A%2F%2Frdf.ebi.ac.uk%2Fterms%2Fchembl%23%3E%0D%0APREFIX+rdfs%3A%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%0D%0A%0D%0Aselect+distinct+%3FdrugMechanism+%3FChEMBLTarget%0D%0Awhere+%7B%0D%0ASERVICE+%3Chttps%3A%2F%2Fwww.ebi.ac.uk%2Frdf%2Fservices%2Fchembl%2Fsparql%3E%0D%0A%7B%0D%0A+++%3FdrugMechanism+a+cco%3AMechanism+%3B%0D%0A++++%09cco%3AhasMolecule+%3FChEMBLCompound+%3B%0D%0A++++%09cco%3AhasTarget+%3FChEMBLTarget+.%0D%0A%7D+%7D+LIMIT+100%0D%0A&format=text%2Fhtml&timeout=0&debug=on&run=+Run+Query+))
 Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
 
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    PREFIX up:<http://purl.uniprot.org/core/>
-    PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX cco: <http://rdf.ebi.ac.uk/terms/chembl#>
-    PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+```sparql
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX up:<http://purl.uniprot.org/core/>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX cco: <http://rdf.ebi.ac.uk/terms/chembl#>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
 
-    SELECT DISTINCT ?drugMechanism ?ChEMBLTarget
-    WHERE {
-    SERVICE <https://www.ebi.ac.uk/rdf/services/chembl/sparql>
-    {
-        ?drugMechanism a cco:Mechanism ;
-    	cco:hasMolecule ?ChEMBLCompound ;
-    	cco:hasTarget ?ChEMBLTarget .
-    }} LIMIT 100
-
-
-
-
-
-
-
-
+SELECT DISTINCT ?drugMechanism ?ChEMBLTarget
+WHERE {
+SERVICE <https://www.ebi.ac.uk/rdf/services/chembl/sparql>{
+    ?drugMechanism a cco:Mechanism ;
+    cco:hasMolecule ?ChEMBLCompound ;
+    cco:hasTarget ?ChEMBLTarget .
+}} LIMIT 100
+```
 
