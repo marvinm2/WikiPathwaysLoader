@@ -4,7 +4,13 @@ This repository contains files for the monthly update of the [WikiPathways SPARQ
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194"><img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/BiGCaTLOGO.png" width="194" height="194">
 
-Every month there is a new data release by WikiPathways, all of which are stored in [data.wikipathways.org](http://data.wikipathways.org/). The protocol for getting the data in the Virtuoso SPARQL endpoint will be described step by step, containing commands used in Linux terminal.
+Every month there is a new data release by WikiPathways, all of which are stored in [data.wikipathways.org](http://data.wikipathways.org/). The protocol for getting the data in the Virtuoso SPARQL endpoint will be described step by step.
+
+The requirements for updating the WikiPathwys SPARQL endpoint with this protocol:
+- Ability to use [Docker](https://docs.docker.com/get-docker/)
+- Atherization to push Docker images to the [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader) repository
+- Ability to use [OpenShift Container Platform command-line interface (CLI)](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html)
+- Access to the Openshift project on the OpenRiskNet infrastructure that runs the WikiPathways Virtuoso service
 
 ## Step 1 - Check if the RDF generation was done correctly
 Check the sizes of the files in the RDF folder of the new set on [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) and whether they are of similar size, or slightly larger than the sizes shown in the screenshot below.
