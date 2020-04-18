@@ -7,9 +7,9 @@ This repository contains files for the monthly update of the [WikiPathways SPARQ
 Every month there is a new data release by WikiPathways, all of which are stored in [data.wikipathways.org](http://data.wikipathways.org/). The protocol for getting the data in the Virtuoso SPARQL endpoint will be described step by step.
 
 The requirements for updating the WikiPathwys SPARQL endpoint with this protocol:
-- Ability to use [Docker](https://docs.docker.com/get-docker/)
+- Ability to use [Docker](https://docs.docker.com/get-docker/) on your system
 - Atherization to push Docker images to the [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader) repository
-- Ability to use [OpenShift Container Platform command-line interface (CLI)](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html)
+- Ability to use [OpenShift Container Platform command-line interface (CLI)](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html) on your system
 - Access to the Openshift project on the OpenRiskNet infrastructure that runs the WikiPathways Virtuoso service
 
 ## Step 1 - Check if the RDF generation was done correctly
