@@ -38,12 +38,18 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
 
     wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-gpml.zip
     wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-void.ttl
     wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-void.ttl
+    wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
+    wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
 
-After downloading, the three `.zip` files should be unzipped, and the remaining `void.ttl` file should be stored in one of the created folders. Can be done with the command:
+After downloading, the three `.zip` files should be unzipped with the command:
 
     unzip \*.zip
+    
+The remaining `wpvocab.ttl`, `gpmlvocab.ttl` and `...rdf-void.ttl` files should be moved into one of the created folders. 
+
+    mv *.ttl wp
 
 ## Step 4 - Concatenate all files
 Connect all separate `.ttl` files in one single file by entering the following:
