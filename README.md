@@ -193,7 +193,7 @@ Use the next query to validate that the right dataset is loaded.
        pav:createdOn ?date .
      }
 
-The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet.
+The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months.
 
 #### Query #2 - Count of Pathways Loaded 
 
