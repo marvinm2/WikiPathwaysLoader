@@ -63,21 +63,17 @@ Afterwards, move back up one folder
 ## Step 5 - Build the Docker image
 To build the Docker image, use the following command from within the folder that contains the `Dockerfile`, `docker-entrypoint.sh`, and the newly created `WikiPathways.ttl`:
 
-    sudo docker build .
+    sudo docker build -t wploader.
 
 ## Step 6 - Tag and push the created Docker image
-The created Docker image will have a randomly generated `IMAGE ID`, which can be found using:
-
-    sudo docker images
-
 The created Docker image should be tagged in two ways:
 - one that has a tag with the version
 - one that has the `latest` tag
 
-Copy the `IMAGE ID` of the created Docker image, and use it to replace the `[IMAGE ID]` in tag commands. The version of the image is the date on which this protocol is executed (in this example, the date is `2020-04-17`). The version is stored to create an archive of older versions of the data.
+The version of the image is the date on which this protocol is executed (in this example, the date is `2020-04-17`). The version is stored to create an archive of older versions of the data.
 
-    sudo docker tag [IMAGE ID] bigcatum/wploader:2020-04-17
-    sudo docker tag [IMAGE ID] bigcatum/wploader:latest
+    sudo docker tag wploader bigcatum/wploader:2020-04-17
+    sudo docker tag wploader bigcatum/wploader:latest
 
 ## Step 7 - Push the tagged Docker images to DockerHub
 For this step, it is necessary to login with a DockerHub account, and have permission to push images to the repository, which is in our case [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader).
