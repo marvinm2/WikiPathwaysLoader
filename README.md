@@ -152,7 +152,6 @@ While in the ISQL, define the namespace prefixes by entering the following comma
     DB.DBA.XML_SET_NS_DECL ('gpml', 'http://vocabularies.wikipathways.org/gpml#',2);
     DB.DBA.XML_SET_NS_DECL ('skos', 'http://www.w3.org/2004/02/skos/core#',2);
     DB.DBA.XML_SET_NS_DECL ('owl', 'http://www.w3.org/2002/07/owl#',2);
-    DB.DBA.XML_SET_NS_DECL ('ns0', 'http://www.geneontology.org/formats/oboInOwl#',2);
     DB.DBA.XML_SET_NS_DECL ('ns1', 'http://purl.obolibrary.org/obo/',2);
     DB.DBA.XML_SET_NS_DECL ('ns2', 'http://data.bioontology.org/metadata/',2);
     DB.DBA.XML_SET_NS_DECL ('ns3', 'http://data.bioontology.org/metadata/obo/',2);
