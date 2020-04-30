@@ -63,7 +63,7 @@ Afterwards, move back up one folder
 ## Step 5 - Build the Docker image
 To build the Docker image, use the following command from within the folder that contains the `Dockerfile`, `docker-entrypoint.sh`, and the newly created `WikiPathways.ttl`:
 
-    sudo docker build -t wploader.
+    sudo docker build -t wploader .
 
 ## Step 6 - Tag and push the created Docker image
 The created Docker image should be tagged in two ways:
