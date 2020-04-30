@@ -260,6 +260,18 @@ WHERE {
 }
 ```
 
+#### Query #8 - Count of all signaling pathways in WikiPathways 
+
+```sparql
+SELECT DISTINCT count(?pathway) as ?pathwaycount
+WHERE {
+  ?tag1 a owl:Class ;
+  rdfs:label ?label .
+  ?tag rdfs:subClassOf* ?tag1.
+  ?pathway a wp:Pathway; wp:ontologyTag ?tag.
+FILTER regex(str(?label), "signaling pathway")
+}
+```
 
 ### Step 16B - Test federated SPARQL query 
 Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
