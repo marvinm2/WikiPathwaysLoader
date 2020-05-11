@@ -158,6 +158,7 @@ While in the ISQL, define the namespace prefixes by entering the following comma
     DB.DBA.XML_SET_NS_DECL ('ns4', 'http://purl.obolibrary.org/obo/pw#',2);
     DB.DBA.XML_SET_NS_DECL ('efo', 'http://www.ebi.ac.uk/efo/',2);
     DB.DBA.XML_SET_NS_DECL ('xml', 'http://www.w3.org/XML/1998/namespace',2);
+    DB.DBA.XML_SET_NS_DECL ('wiki', 'http://sparql.wikipathways.org/',2);
     
 Define the permissions to use the SPARQL endpoint with:
 
