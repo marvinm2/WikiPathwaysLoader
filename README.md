@@ -264,7 +264,7 @@ WHERE {
 #### Query #8 - Count of all signaling pathways in WikiPathways 
 
 ```sparql
-SELECT DISTINCT count(?pathway) as ?pathwaycount
+SELECT count(distinct ?pathway) as ?pathwaycount
 WHERE {
   ?tag1 a owl:Class ;
   rdfs:label ?label .
