@@ -127,7 +127,7 @@ Prior to loading the new data, the Virtuoso server has to be restarted and the o
 
     RDF_GLOBAL_RESET();
 
-    DELETE FROM load_list WHERE ll_graph = 'wikipathways.org';
+    DELETE FROM load_list WHERE ll_graph = 'http://rdf.wikipathways.org/';
 
 ## Step 13 - Loading the prefixes and permissions
 While in the ISQL, define the namespace prefixes by entering the following commands:
@@ -170,7 +170,7 @@ Define the permissions to use the SPARQL endpoint with:
 ## Step 14 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
-    ld_dir('.', 'WikiPathways.ttl', 'wikipathways.org');
+    ld_dir('.', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
     rdf_loader_run();
 
 To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. Do this using:
