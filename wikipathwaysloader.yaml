@@ -13,7 +13,7 @@ parameters:
 - name: LOADER_REGISTRY
   value: bigcatum
 - name: LOADER_IMAGE
-  value: wploader
+  value: wploader:latest
 - name: LOADER_TARGET_CLAIM_NAME
   value: aopwiki-target-claim
 
