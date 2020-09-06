@@ -36,13 +36,14 @@ This folder will be used to store all Turtle files, and already includes the `Pa
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
     wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
+    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseyOntology.ttl
 
 After downloading, the three `.zip` files should be unzipped with the command:
 
@@ -153,10 +154,6 @@ While in the ISQL, define the namespace prefixes by entering the following comma
     DB.DBA.XML_SET_NS_DECL ('gpml', 'http://vocabularies.wikipathways.org/gpml#',2);
     DB.DBA.XML_SET_NS_DECL ('skos', 'http://www.w3.org/2004/02/skos/core#',2);
     DB.DBA.XML_SET_NS_DECL ('owl', 'http://www.w3.org/2002/07/owl#',2);
-    DB.DBA.XML_SET_NS_DECL ('ns1', 'http://purl.obolibrary.org/obo/',2);
-    DB.DBA.XML_SET_NS_DECL ('ns2', 'http://data.bioontology.org/metadata/',2);
-    DB.DBA.XML_SET_NS_DECL ('ns3', 'http://data.bioontology.org/metadata/obo/',2);
-    DB.DBA.XML_SET_NS_DECL ('ns4', 'http://purl.obolibrary.org/obo/pw#',2);
     DB.DBA.XML_SET_NS_DECL ('efo', 'http://www.ebi.ac.uk/efo/',2);
     DB.DBA.XML_SET_NS_DECL ('xml', 'http://www.w3.org/XML/1998/namespace',2);
     DB.DBA.XML_SET_NS_DECL ('wiki', 'http://sparql.wikipathways.org/',2);
