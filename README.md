@@ -36,12 +36,13 @@ This folder will be used to store all Turtle files, and already includes the `Pa
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200410-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20200810-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
+    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
 
 After downloading, the three `.zip` files should be unzipped with the command:
 
@@ -63,7 +64,7 @@ Afterwards, move back up one folder
 ## Step 5 - Build the Docker image
 To build the Docker image, use the following command from within the folder that contains the `Dockerfile`, `docker-entrypoint.sh`, and the newly created `WikiPathways.ttl`:
 
-    sudo docker build -t wploader.
+    sudo docker build -t wploader .
 
 ## Step 6 - Tag and push the created Docker image
 The created Docker image should be tagged in two ways:
@@ -126,7 +127,7 @@ Prior to loading the new data, the Virtuoso server has to be restarted and the o
 
     RDF_GLOBAL_RESET();
 
-    DELETE FROM load_list WHERE ll_graph = 'wikipathways.org';
+    DELETE FROM load_list WHERE ll_graph = 'http://rdf.wikipathways.org/';
 
 ## Step 13 - Loading the prefixes and permissions
 While in the ISQL, define the namespace prefixes by entering the following commands:
@@ -158,6 +159,8 @@ While in the ISQL, define the namespace prefixes by entering the following comma
     DB.DBA.XML_SET_NS_DECL ('ns4', 'http://purl.obolibrary.org/obo/pw#',2);
     DB.DBA.XML_SET_NS_DECL ('efo', 'http://www.ebi.ac.uk/efo/',2);
     DB.DBA.XML_SET_NS_DECL ('xml', 'http://www.w3.org/XML/1998/namespace',2);
+    DB.DBA.XML_SET_NS_DECL ('wiki', 'http://sparql.wikipathways.org/',2);
+    DB.DBA.XML_SET_NS_DECL ('cur', 'http://vocabularies.wikipathways.org/wp#Curation:',2);
     
 Define the permissions to use the SPARQL endpoint with:
 
@@ -168,7 +171,7 @@ Define the permissions to use the SPARQL endpoint with:
 ## Step 14 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
-    ld_dir('.', 'WikiPathways.ttl', 'wikipathways.org');
+    ld_dir('.', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
     rdf_loader_run();
 
 To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. Do this using:
@@ -260,6 +263,18 @@ WHERE {
 }
 ```
 
+#### Query #8 - Count of all signaling pathways in WikiPathways 
+
+```sparql
+SELECT count(distinct ?pathway) as ?pathwaycount
+WHERE {
+  ?tag1 a owl:Class ;
+  rdfs:label ?label .
+  ?tag rdfs:subClassOf* ?tag1.
+  ?pathway a wp:Pathway; wp:ontologyTag ?tag.
+FILTER regex(str(?label), "signaling pathway")
+}
+```
 
 ### Step 16B - Test federated SPARQL query 
 Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
