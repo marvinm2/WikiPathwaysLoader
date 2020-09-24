@@ -58,6 +58,10 @@ Connect all separate `.ttl` files in one single file by entering the following:
 
     find . -name *.ttl -exec cat > ../WikiPathways.ttl {} \;
 
+Also, be sure to download the most recent VoID file separately, naming it `void`:
+    
+    wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-void.ttl
+
 Afterwards, move back up one folder
 
     cd ../
