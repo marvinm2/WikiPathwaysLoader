@@ -36,10 +36,10 @@ This folder will be used to store all Turtle files, and already includes the `Pa
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20200910-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20201010-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20201010-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20201010-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20201010-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
     wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
