@@ -1,40 +1,24 @@
 # WikiPathwaysloader
 
-This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed in Openshift using the base [openlink/virtuoso-opensource-7](https://hub.docker.com/r/openlink/virtuoso-opensource-7/) Docker image. In order to load the data into the Virtuoso service, a loader Docker image is built and pushed to DockerHub in the [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader) repository.
+This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [openlink/virtuoso-opensource-7](https://hub.docker.com/r/openlink/virtuoso-opensource-7/) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194"><img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/BiGCaTLOGO.png" width="194" height="194">
 
 Every month there is a new data release by WikiPathways, all of which are stored in [data.wikipathways.org](http://data.wikipathways.org/). The protocol for getting the data in the Virtuoso SPARQL endpoint will be described step by step.
-
-The requirements for updating the WikiPathwys SPARQL endpoint with this protocol:
-- Ability to use [Docker](https://docs.docker.com/get-docker/) on your system
-- Atherization to push Docker images to the [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader) repository
-- Ability to use [OpenShift Container Platform command-line interface (CLI)](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html) on your system
-- Access to the Openshift project on the OpenRiskNet infrastructure that runs the WikiPathways Virtuoso service
 
 ## Step 1 - Check if the RDF generation was done correctly
 Check the sizes of the files in the RDF folder of the new set on [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) and whether they are of similar size, or slightly larger than the sizes shown in the screenshot below.
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/datawikipathways.png">
 
+## Step 2 - Access the server
 
-## Step 2 - Clone this repository or download the necessary files
-For this process of creating the Docker image and using it in Openshift, the following files are required:
-- [Dockerfile](https://github.com/marvinm2/WikiPathwaysloader/blob/master/Dockerfile)
-- [docker-entrypoint.sh](https://github.com/marvinm2/WikiPathwaysloader/blob/master/docker-entrypoint.sh)
-- [wikipathwaysloader.yaml](https://github.com/marvinm2/WikiPathwaysloader/blob/master/wikipathwaysloader.yaml)
-- [/data/PathwayOntology.ttl](https://github.com/marvinm2/WikiPathwaysLoader/blob/master/data/PathwayOntology.ttl)
+## Step 3 - Enter the folder called 'import'
+Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` folder is located, cloned from [](). There, enter the folder called `import`. This folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
 
-Download these files or clone this repository with the following command:
+    [ADD COMMAND HERE]
 
-    git clone http://github.com/marvinm2/WikiPathwaysloader.git
-
-## Step 3 - Enter the folder called 'data'
-This folder will be used to store all Turtle files, and already includes the `PathwayOntology.ttl` file. The folder should be located in the same location as the other required files mentioned in step 2.
-
-    cd data
-
-To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-04-10) should be adapted to match the latest datasets:
+To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
     wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-gpml.zip
     wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-wp.zip
@@ -54,7 +38,7 @@ The remaining `wpvocab.ttl`, `gpmlvocab.ttl` and `...rdf-void.ttl` files should 
     mv *.ttl wp
 
 ## Step 4 - Concatenate all files
-Connect all separate `.ttl` files in one single file by entering the following:
+Combine all separate `.ttl` files in one single file by entering the following:
 
     find . -name *.ttl -exec cat > ../WikiPathways.ttl {} \;
 
