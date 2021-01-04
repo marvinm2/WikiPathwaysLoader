@@ -13,6 +13,8 @@ Check the sizes of the files in the RDF folder of the new set on [data.wikipathw
 
 ## Step 2 - Access the server
 
+
+
 ## Step 3 - Enter the folder called 'import'
 Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` folder is located, cloned from [](). There, enter the folder called `import`. This folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
 
@@ -28,19 +30,34 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
     wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
     wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
+    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/blob/master/data/chebi-slim.ttl
 
-After downloading, the three `.zip` files should be unzipped with the command:
+## Step A for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
+Navigate to the `/var/opt/umdatastore/SARS-CoV-2-WikiPathways` and renew the folder by using
+
+    git pull
+
+Then copy the 3 zip files to the `virtuoso-httpd-docker` folder.
+
+    cp wikipathways-SARS-CoV-2-rdf-wp.zip ../virtuoso-httpd-docker/import
+    cp wikipathways-SARS-CoV-2-rdf-gpml.zip ../virtuoso-httpd-docker/import
+    cp wikipathways-SARS-CoV-2-rdf-authors.zip ../virtuoso-httpd-docker/import
+
+Return to the `/var/opt/umdatastore/virtuoso-httpd-docker/import` folder.
+
+## Step 4 - Unzip and contatenate all files
+
+After downloading and copying all zip files into the `import` folder, the `.zip` files should be unzipped with the command:
 
     unzip \*.zip
     
-The remaining `wpvocab.ttl`, `gpmlvocab.ttl` and `...rdf-void.ttl` files should be moved into one of the created folders. 
+The remaining `wpvocab.ttl`, `gpmlvocab.ttl`, `chebi-slim.ttl`, and `...rdf-void.ttl` files should be moved into one of the created folders. 
 
     mv *.ttl wp
 
-## Step 4 - Concatenate all files
 Combine all separate `.ttl` files in one single file by entering the following:
 
-    find . -name *.ttl -exec cat > ../WikiPathways.ttl {} \;
+    find . -name *.ttl -exec cat > .WikiPathways.ttl {} \;
 
 Also, be sure to download the most recent VoID file separately, naming it `void`:
     
@@ -50,76 +67,24 @@ Afterwards, move back up one folder
 
     cd ../
 
-## Step 5 - Build the Docker image
-To build the Docker image, use the following command from within the folder that contains the `Dockerfile`, `docker-entrypoint.sh`, and the newly created `WikiPathways.ttl`:
 
-    sudo docker build -t wploader .
-
-## Step 6 - Tag and push the created Docker image
-The created Docker image should be tagged in two ways:
-- one that has a tag with the version
-- one that has the `latest` tag
-
-The version of the image is the date on which this protocol is executed (in this example, the date is `2020-04-17`). The version is stored to create an archive of older versions of the data.
-
-    sudo docker tag wploader bigcatum/wploader:2020-04-17
-    sudo docker tag wploader bigcatum/wploader:latest
-
-## Step 7 - Push the tagged Docker images to DockerHub
-For this step, it is necessary to login with a DockerHub account, and have permission to push images to the repository, which is in our case [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader).
-
-    sudo docker push bigcatum/wploader:2020-04-17
-    sudo docker push bigcatum/wploader:latest
-
-This might take a while, depending on your internet speed. When it is finished, the Docker images will appear in the `tags` tab of [bigcatum/wploader](https://hub.docker.com/r/bigcatum/wploader/tags?page=1) repository.
-
-## Step 8 - Using the created loader Docker image in Openshift
-Assuming you have access to the Openshift project that has the running Virtuoso service (in our case, in the OpenRiskNet e-infrastructure), you can login using the [OpenShift Container Platform command-line interface (CLI)](https://docs.openshift.com/container-platform/4.2/cli_reference/openshift_cli/getting-started-cli.html). For easy access to the login command, log in on the [Openshift console of OpenRisknet](https://prod.openrisknet.org/console/), end use the `Copy Login Command` in the top-right of the screen for your authorization token. If you have login details, use the following command, after which you enter your authentication details:
-
-    oc login https://prod.openrisknet.org:443
-
-## Step 9 - Removing the old wikipathwaysloader job, and starting the new one
-After you logged in, you want to remove the old `wikipathwaysloader` job by entering:
-
-    oc delete job --selector template=wikipathwaysloader
-
-Next, a new job can be started which will use the [bigcatum/wploader:latest](https://hub.docker.com/r/bigcatum/wploader/tags?page=1) Docker image. Be sure to be located in the folder that has the `wikipathwaysloader.yaml` file.
-
-    oc process -f wikipathwaysloader.yaml | oc create -f -
-
-This job will pull the [bigcatum/wploader:latest](https://hub.docker.com/r/bigcatum/wploader/tags?page=1) Docker image and execute the `docker-entrypoint.sh` file which copies the `WikiPathways.ttl` file into the mounted folder of the Virtuoso service.
-
-## Step 10 - Entering the Virtuoso pod
-To enter the Virtuoso pod, the name of the pod is required, which you can list using:
-
-    oc get pods
-
-Copy the name of the correct pod, and use it in the following command to replace `[POD NAME]`:
-
-    oc rsh [POD NAME]
-
-## Step 11 - Move the WikiPathways.ttl to the right folder and retrieve the DBA password
-A simple step, moving the `WikiPathways.ttl` file from the mounted folder into the one you are in when you enter the pod.
-
-    mv ../../../wikipathwaysdata/WikiPathways.ttl .
-
-Next, look up the DBA password using:
-
-    head -n3 ../../../settings/dba_password
-
-## Step 12 - Enter SQL and reset the Virtuoso service
+## Step 5 - Enter SQL and reset the Virtuoso service
 To enter the OpenLink Virtuoso Interactive SQL, enter:
 
-    isql
+    docker exec -i wp-virtuoso-httpd isql-v 1111
 
-Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time and requires you to enter the DBA password:
+Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time:
 
     RDF_GLOBAL_RESET();
 
     DELETE FROM load_list WHERE ll_graph = 'http://rdf.wikipathways.org/';
+    
+To check if the files are removed from the `load_list`, enter:
 
-## Step 13 - Loading the prefixes and permissions
-While in the ISQL, define the namespace prefixes by entering the following commands:
+    select * from DB.DBA.load_list;
+
+## Step 6 - Loading the prefixes and permissions
+While in the SQL, define the namespace prefixes by entering the following commands:
 
     log_enable(2);
     DB.DBA.XML_SET_NS_DECL ('dc', 'http://purl.org/dc/elements/1.1/',2);
@@ -153,130 +118,54 @@ Define the permissions to use the SPARQL endpoint with:
     grant select on "DB.DBA.SPARQL_SINV_2" to "SPARQL";
     grant execute on "DB.DBA.SPARQL_SINV_IMP" to "SPARQL";
 
-## Step 14 - Load the data and run the RDF loader
+## Step 7 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
     ld_dir('.', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
     rdf_loader_run();
 
-To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. Do this using:
+To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. This step will also indicate whether the Turtle file is correct or causes an error in Virtuoso. Do this using:
 
     select * from DB.DBA.load_list;
 
-## Step 15 - Quit the SQL and pod
+## Step 8 - Quit the SQL
 To quit the SQL:
 
     quit;
 
-To exit the pod:
+## Step 9 - Move the void file to ./well-known
+Enter the docker container:
 
-    exit
+    docker exec -it wp-virtuoso-httpd bash
+    
+Move the void file to the `.well-known` folder:
 
-## Step 16 - Test if everything went well
+    mv /import/void usr/local/apache2/htdocs/.well-known/
 
-The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries by pasting the queries below in the SPARQL endpoint and click `Run query`. The testing comprises of two steps:
+## Step 10 - Test if everything went well
 
-### Step 16A - Perform SPARQL queries
-Run the SPARQL queries below to count the content of the RDF and check if the data loaded is consistent with previous releases. 
+The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises of three steps:
 
-#### Query #1 - Metadata 
-Use the next query to validate that the right dataset is loaded. It should normally indicate the 10th of the current month, assuming this protocol is executed after the 10th day of the month.
+#### Metadata 
 
-```sparql
-SELECT DISTINCT ?dataset (str(?titleLit) as ?title) ?date ?license 
-WHERE {
-   ?dataset a void:Dataset ;
-   dcterms:title ?titleLit ;
-   dcterms:license ?license ;
-   pav:createdOn ?date .
- }
- ```
+Use the next query to validate that the right dataset is loaded. It should normally indicate the 10th of the current month, assuming this protocol is executed after the 10th day of the month. For that, select the `A. Metadata/metadata.rq` query from the Query panel and run it.
 
-The following SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF.
+### Counts of data
 
-#### Query #2 - Count of Pathways Loaded 
+The following set of SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF. These SPARQL queries are located in the `A. Metadata/datacounts` folder in the Query panel
 
-```sparql
-SELECT DISTINCT count(?pathwayRDF) as ?pathwayCount
-WHERE {
-    ?pathwayRDF a wp:Pathway .
-} 
-```
+- Count of Pathways Loaded 
+- Count total amount of DataNodes 
+- Count of GeneProduct Nodes 
+- Count of Protein Nodes 
+- Count of Metabolites 
+- Count of all Interactions in WikiPathways 
+- Count of all signaling pathways in WikiPathways 
 
-#### Query #3 - Count total amount of DataNodes 
 
-```sparql
-SELECT DISTINCT count(?dataNodes) as ?DataNodeCount
-WHERE {
-    ?dataNodes a wp:DataNode .
-}
-```
-
-#### Query #4 - Count of GeneProduct Nodes 
-
-```sparql
-SELECT DISTINCT count(?geneProduct) as ?GeneProductCount
-WHERE {
-    ?geneProduct a wp:GeneProduct .
-}
-```
-
-#### Query #5 - Count of Protein Nodes 
-
-```sparql
-SELECT DISTINCT count(?protein) as ?ProteinCount
-WHERE {
-    ?protein a wp:Protein .
-}
-```
-
-#### Query #6 - Count of Metabolites 
-
-```sparql
-SELECT DISTINCT count(?Metabolite) as ?MetaboliteCount
-WHERE {
-    ?Metabolite a wp:Metabolite .
-}
-```
-
-#### Query #7 - Count of all Interactions in WikiPathways 
-
-```sparql
-SELECT DISTINCT count(?Interaction) as ?InteractionCount
-WHERE {
-    ?Interaction a wp:Interaction .
-}
-```
-
-#### Query #8 - Count of all signaling pathways in WikiPathways 
-
-```sparql
-SELECT count(distinct ?pathway) as ?pathwaycount
-WHERE {
-  ?tag1 a owl:Class ;
-  rdfs:label ?label .
-  ?tag rdfs:subClassOf* ?tag1.
-  ?pathway a wp:Pathway; wp:ontologyTag ?tag.
-FILTER regex(str(?label), "signaling pathway")
-}
-```
-
-### Step 16B - Test federated SPARQL query 
+### Federated SPARQL query 
 Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
 
-```sparql
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX up:<http://purl.uniprot.org/core/>
-PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX cco: <http://rdf.ebi.ac.uk/terms/chembl#>
-PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+TO FIX: the snorql UI doesn't like federated queries. Try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
 
-SELECT DISTINCT ?drugMechanism ?ChEMBLTarget
-WHERE {
-SERVICE <https://www.ebi.ac.uk/rdf/services/chembl/sparql>{
-    ?drugMechanism a cco:Mechanism ;
-    cco:hasMolecule ?ChEMBLCompound ;
-    cco:hasTarget ?ChEMBLTarget .
-}} LIMIT 100
-```
 
