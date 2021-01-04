@@ -16,9 +16,9 @@ Check the sizes of the files in the RDF folder of the new set on [data.wikipathw
 
 
 ## Step 3 - Enter the folder called 'import'
-Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` folder is located, cloned from [](). There, enter the folder called `import`. This folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
+Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` folder is located, cloned from [github.com/wikipathways/virtuoso-httpd-docker](https://github.com/wikipathways/virtuoso-httpd-docker). There, enter the folder called `import`. This folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
 
-    [ADD COMMAND HERE]
+    rm -r *
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
