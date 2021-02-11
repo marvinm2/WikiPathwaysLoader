@@ -28,9 +28,10 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
-    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
-    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
-    wget https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/blob/master/data/chebi-slim.ttl
+    wget -O PathwayOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/lastSuccessfulBuild/artifact/pw.ttl
+    wget -O DiseaseOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/lastSuccessfulBuild/artifact/doid.ttl
+    wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
+    wget -O chebi-slim.ttl https://jenkins.bigcat.unimaas.nl/job/WikiPathways%20-%20CHEBI/lastSuccessfulBuild/artifact/chebi-slim.ttl
 
 ## Step A for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
 Navigate to the `/var/opt/umdatastore/SARS-CoV-2-WikiPathways` and renew the folder by using
