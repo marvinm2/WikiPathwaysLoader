@@ -22,10 +22,10 @@ Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` fol
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
     wget -O PathwayOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/lastSuccessfulBuild/artifact/pw.ttl
