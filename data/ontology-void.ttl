@@ -10,6 +10,7 @@
         pav:createdOn               "[date of ttl file creation]"^^xsd:dateTime ;
         pav:importedBy              <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/> ;
         pav:importedFrom            <http://purl.obolibrary.org/obo/pw.owl> ;
+	dcterms:hasVersion          "[version]"^^xsd:string ;
         pav:importedOn              "[date of download]"^^xsd:dateTime ;
         dcat:landingPage            <https://bioportal.bioontology.org/ontologies/PW> ;
         foaf:homepage               <https://bioportal.bioontology.org/ontologies/PW> .
@@ -26,6 +27,7 @@
         pav:createdOn               "[date of creation]"^^xsd:dateTime ;
         pav:importedBy              <[Jenkins job link> ;
         pav:importedFrom            <[download link]> ;
+	dcterms:hasVersion          "[version]"^^xsd:string ;
         pav:importedOn              "[date of download]"^^xsd:dateTime ;
         dcat:landingPage            <https://bioportal.bioontology.org/ontologies/DOID> ;
         foaf:homepage               <https://bioportal.bioontology.org/ontologies/DOID> .
@@ -42,6 +44,7 @@
         pav:createdOn               "[date of creation]"^^xsd:dateTime ;
         pav:importedBy              <[Jenkins job link> ;
         pav:importedFrom            <[download link]> ;
+	dcterms:hasVersion          "[version]"^^xsd:string ;
         pav:importedOn              "[date of download]"^^xsd:dateTime ;
         dcat:landingPage            <https://bioportal.bioontology.org/ontologies/CL> ;
         foaf:homepage               <https://bioportal.bioontology.org/ontologies/CL> .
