@@ -1,0 +1,47 @@
+<https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/ws/pw.ttl>
+        a                           void:Dataset ;
+        dcterms:accuralPeriodicity  freq:monthly ;
+        dcterms:description         "The Pathway Ontology converted into RDF from the OWL file downloaded from BioPortal."^^xsd:string ;
+        dcterms:issued              "[release date of original owl file]"^^xsd:dateTime ; 
+        dcterms:license             <http://creativecommons.org/licenses/by/3.0> ;
+        dcterms:title               "Pathway Ontology"^^xsd:string ;
+        pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
+        pav:createdBy               <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/> ;
+        pav:createdOn               "[date of ttl file creation]"^^xsd:dateTime ;
+        pav:importedBy              <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/> ;
+        pav:importedFrom            <http://purl.obolibrary.org/obo/pw.owl> ;
+        pav:importedOn              "[date of download]"^^xsd:dateTime ;
+        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/PW> ;
+        foaf:homepage               <https://bioportal.bioontology.org/ontologies/PW> .
+
+<[link to dataset]>
+        a                           void:Dataset ;
+        dcterms:accuralPeriodicity  [from the freq ontology] ;
+        dcterms:description         "[whatever the ontology has]"^^xsd:string ;
+        dcterms:issued              "[release date]"^^xsd:dateTime ; 
+        dcterms:license             [license] ;
+        dcterms:title               "[Title of the file]"^^xsd:string ;
+        pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
+        pav:createdBy               <[Jenkins job link]> ;
+        pav:createdOn               "[date of creation]"^^xsd:dateTime ;
+        pav:importedBy              <[Jenkins job link> ;
+        pav:importedFrom            <[download link]> ;
+        pav:importedOn              "[date of download]"^^xsd:dateTime ;
+        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/DOID> ;
+        foaf:homepage               <https://bioportal.bioontology.org/ontologies/DOID> .
+
+<[link to dataset]>
+        a                           void:Dataset ;
+        dcterms:accuralPeriodicity  [from the freq ontology] ;
+        dcterms:description         "[whatever the ontology has]"^^xsd:string ;
+        dcterms:issued              "[release date]"^^xsd:dateTime ; 
+        dcterms:license             [license] ;
+        dcterms:title               "[Title of the file]"^^xsd:string ;
+        pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
+        pav:createdBy               <[Jenkins job link]> ;
+        pav:createdOn               "[date of creation]"^^xsd:dateTime ;
+        pav:importedBy              <[Jenkins job link> ;
+        pav:importedFrom            <[download link]> ;
+        pav:importedOn              "[date of download]"^^xsd:dateTime ;
+        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/CL> ;
+        foaf:homepage               <https://bioportal.bioontology.org/ontologies/CL> .
