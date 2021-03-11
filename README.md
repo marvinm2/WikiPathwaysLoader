@@ -58,7 +58,8 @@ The remaining `wpvocab.ttl`, `gpmlvocab.ttl`, `chebi-slim.ttl`, and `...rdf-void
 
 Combine all separate `.ttl` files in one single file by entering the following:
 
-    find . -name *.ttl -exec cat > .WikiPathways.ttl {} \;
+    find . -name *.ttl -exec cat > ../WikiPathways.ttl {} \;
+    mv ../WikiPathways.ttl .
 
 Also, be sure to download the most recent VoID file separately, naming it `void`:
     
@@ -122,7 +123,7 @@ Define the permissions to use the SPARQL endpoint with:
 ## Step 7 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
-    ld_dir('.', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
+    ld_dir('/import', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
     rdf_loader_run();
 
 To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. This step will also indicate whether the Turtle file is correct or causes an error in Virtuoso. Do this using:
