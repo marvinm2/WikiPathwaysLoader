@@ -1,3 +1,16 @@
+@prefix void:  <http://rdfs.org/ns/void#> .
+@prefix pav:   <http://purl.org/pav/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix freq:  <http://purl.org/cld/freq/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix wp:    <http://vocabularies.wikipathways.org/wp#> .
+@prefix dcat:  <http://www.w3.org/ns/dcat#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+
+
+
 <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/ws/pw.ttl>
         a                           void:Dataset ;
         dcterms:accuralPeriodicity  freq:monthly ;
