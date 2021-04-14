@@ -2,49 +2,48 @@
         a                           void:Dataset ;
         dcterms:accuralPeriodicity  freq:monthly ;
         dcterms:description         "The Pathway Ontology converted into RDF from the OWL file downloaded from BioPortal."^^xsd:string ;
-        dcterms:issued              "[release date of original owl file]"^^xsd:dateTime ; 
+        dcterms:issued              "2019-10-19T20:13"^^xsd:dateTime ; 
         dcterms:license             <http://creativecommons.org/licenses/by/3.0> ;
         dcterms:title               "Pathway Ontology"^^xsd:string ;
         pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
         pav:createdBy               <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/> ;
-        pav:createdOn               "[date of ttl file creation]"^^xsd:dateTime ;
+        pav:createdOn               "2021-03-03T09:53"^^xsd:dateTime ;
         pav:importedBy              <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/> ;
         pav:importedFrom            <http://purl.obolibrary.org/obo/pw.owl> ;
-	pav:version                 "[version]"^^xsd:string ;
-        pav:importedOn              "[date of download]"^^xsd:dateTime ;
-        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/PW> ;
-        foaf:homepage               <https://bioportal.bioontology.org/ontologies/PW> .
+	pav:version                 "7.52"^^xsd:string ;
+        pav:importedOn              "2021-03-03T09:53"^^xsd:dateTime ;
+        dcat:landingPage            <http://www.obofoundry.org/ontology/pw.html> ;
+        foaf:homepage               <http://www.obofoundry.org/ontology/pw.html> .
 
-<[link to dataset]>
+<https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl>
         a                           void:Dataset ;
-        dcterms:accuralPeriodicity  [from the freq ontology] ;
-        dcterms:description         "[whatever the ontology has]"^^xsd:string ;
-        dcterms:issued              "[release date]"^^xsd:dateTime ; 
-        dcterms:license             [license] ;
-        dcterms:title               "[Title of the file]"^^xsd:string ;
+        dcterms:accuralPeriodicity  freq:monthly ;
+        dcterms:description         "An ontology of cell types."^^xsd:string ;
+        dcterms:issued              "2021-03-05"^^xsd:dateTime ; 
+        dcterms:license             <http://creativecommons.org/licenses/by/4.0/>;
+        dcterms:title               "Cell Ontology"^^xsd:string ;
         pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
-        pav:createdBy               <[Jenkins job link]> ;
-        pav:createdOn               "[date of creation]"^^xsd:dateTime ;
-        pav:importedBy              <[Jenkins job link> ;
-        pav:importedFrom            <[download link]> ;
-	pav:version                 "[version]"^^xsd:string ;
-        pav:importedOn              "[date of download]"^^xsd:dateTime ;
-        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/DOID> ;
-        foaf:homepage               <https://bioportal.bioontology.org/ontologies/DOID> .
-
-<[link to dataset]>
-        a                           void:Dataset ;
-        dcterms:accuralPeriodicity  [from the freq ontology] ;
-        dcterms:description         "[whatever the ontology has]"^^xsd:string ;
-        dcterms:issued              "[release date]"^^xsd:dateTime ; 
-        dcterms:license             [license] ;
-        dcterms:title               "[Title of the file]"^^xsd:string ;
-        pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
-        pav:createdBy               <[Jenkins job link]> ;
-        pav:createdOn               "[date of creation]"^^xsd:dateTime ;
-        pav:importedBy              <[Jenkins job link> ;
-        pav:importedFrom            <[download link]> ;
-	pav:version                 "[version]"^^xsd:string ;
-        pav:importedOn              "[date of download]"^^xsd:dateTime ;
+        pav:createdBy               <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/> ;
+        pav:createdOn               "2021-04-01T03:54"^^xsd:dateTime ;
+        pav:importedBy              <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/> ;
+        pav:importedFrom            <https://raw.githubusercontent.com/obophenotype/cell-ontology/master/cl.owl> ;
+	pav:version                 "2021-03-05"^^xsd:string ;
+        pav:importedOn              "2021-04-01T03:54"^^xsd:dateTime ;
         dcat:landingPage            <https://bioportal.bioontology.org/ontologies/CL> ;
         foaf:homepage               <https://bioportal.bioontology.org/ontologies/CL> .
+
+<https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/lastSuccessfulBuild/artifact/doid.ttl>
+        a                           void:Dataset ;
+        dcterms:description         "The Disease Ontology has been developed as a standardized ontology for human disease with the purpose of providing the biomedical community with consistent, reusable and sustainable descriptions of human disease terms, phenotype characteristics and related medical vocabulary disease concepts."^^xsd:string ;
+        dcterms:issued              "2021-01-28T15:00"^^xsd:dateTime ; 
+        dcterms:license             <https://creativecommons.org/publicdomain/zero/1.0/> ;
+        dcterms:title               "Human Disease Ontology"^^xsd:string ;
+        pav:createdAt               <http://www.wikidata.org/entity/Q1137652> ;
+        pav:createdBy               <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/> ;
+        pav:createdOn               "2021-02-10T11:06"^^xsd:dateTime ;
+        pav:importedBy              <https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/> ;
+        pav:importedFrom            <https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/main/src/ontology/doid.owl> ;
+	pav:version                 "2021-01-28"^^xsd:string ;
+        pav:importedOn              "2021-02-10T11:06"^^xsd:dateTime ;
+        dcat:landingPage            <https://bioportal.bioontology.org/ontologies/DOID/> ;
+        foaf:homepage               <https://bioportal.bioontology.org/ontologies/DOID> .
