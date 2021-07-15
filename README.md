@@ -12,20 +12,20 @@ Check the sizes of the files in the RDF folder of the new set on [data.wikipathw
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/datawikipathways.png">
 
 ## Step 2 - Access the server
-
+Currently, the service runs on 81.169.200.64
 
 
 ## Step 3 - Enter the folder called 'import'
-Navigate to the `/var/opt/umdatastore` folder, where `virtuoso-httpd-docker` folder is located, cloned from [github.com/wikipathways/virtuoso-httpd-docker](https://github.com/wikipathways/virtuoso-httpd-docker). There, enter the folder called `import`. This folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
+Navigate to the `/home/MarvinMartens/WikiPathways` folder, where the `import` and `data` folders are located. The `import` folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
 
     rm -r *
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210210-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-void.ttl
     wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
     wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
     wget -O PathwayOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/lastSuccessfulBuild/artifact/pw.ttl
@@ -40,11 +40,10 @@ Navigate to the `/var/opt/umdatastore/SARS-CoV-2-WikiPathways` and renew the fol
 
 Then copy the 3 zip files to the `virtuoso-httpd-docker` folder.
 
-    cp wikipathways-SARS-CoV-2-rdf-wp.zip ../virtuoso-httpd-docker/import
-    cp wikipathways-SARS-CoV-2-rdf-gpml.zip ../virtuoso-httpd-docker/import
-    cp wikipathways-SARS-CoV-2-rdf-authors.zip ../virtuoso-httpd-docker/import
+    cp wikipathways-SARS-CoV-2-rdf-wp.zip ../import
+    cp wikipathways-SARS-CoV-2-rdf-gpml.zip ../import
 
-Return to the `/var/opt/umdatastore/virtuoso-httpd-docker/import` folder.
+Return to the `/home/MarvinMartens/WikiPathways/import` folder.
 
 ## Step 4 - Unzip and contatenate all files
 
@@ -63,17 +62,13 @@ Combine all separate `.ttl` files in one single file by entering the following:
 
 Also, be sure to download the most recent VoID file separately, naming it `void`:
     
-    wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20201110-rdf-void.ttl
-
-Afterwards, move back up one folder
-
-    cd ../
+    wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-void.ttl
 
 
 ## Step 5 - Enter SQL and reset the Virtuoso service
 To enter the OpenLink Virtuoso Interactive SQL, enter:
 
-    docker exec -i wp-virtuoso-httpd isql-v 1111
+    sudo docker exec -i wikipathways-virtuoso-httpd isql-v 1111
 
 Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time:
 
@@ -138,11 +133,11 @@ To quit the SQL:
 ## Step 9 - Move the void file to ./well-known
 Enter the docker container:
 
-    docker exec -it wp-virtuoso-httpd bash
+    sudo docker exec -it wikipathways-virtuoso-httpd bash
     
 Move the void file to the `.well-known` folder:
 
-    mv /import/void usr/local/apache2/htdocs/.well-known/
+    cp ../import/void ../usr/local/apache2/htdocs/.well-known/
 
 ## Step 10 - Test if everything went well
 
