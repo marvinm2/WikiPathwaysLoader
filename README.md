@@ -34,7 +34,7 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O chebi-slim.ttl https://jenkins.bigcat.unimaas.nl/job/WikiPathways%20-%20CHEBI/lastSuccessfulBuild/artifact/chebi-slim.ttl
 
 ## Step A for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
-Navigate to the `/var/opt/umdatastore/SARS-CoV-2-WikiPathways` and renew the folder by using
+Navigate to the `/home/MarvinMartens/SARS-CoV-2-WikiPathways` and renew the folder by using
 
     git pull
 
