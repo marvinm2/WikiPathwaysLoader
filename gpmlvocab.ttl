@@ -1,0 +1,707 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix wp: <http://vocabularies.wikipathways.org/gpml#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+wp:RequiresCurationAttention a owl:Class ;
+    rdfs:label "RequiresCurationAttention"@en ;
+    rdfs:comment "Deprecated: Not in use."@en ;
+    skos:inScheme wp: .
+
+wp:align a owl:DatatypeProperty ;
+    rdfs:label "align"@en ;
+    rdfs:comment "Horizontal alignment of displayed text, e.g., Left, Center, Right."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:arrowHead a owl:DatatypeProperty ;
+    rdfs:label "arrowHead"@en ;
+    rdfs:comment "Specifies the glyph at the ends of lines and interactions."@en ;
+    rdfs:range wp:Point,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:author a owl:DatatypeProperty ;
+    rdfs:label "author"@en ;
+    rdfs:comment "The person who created or edited the pathway in question."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:biopaxRef a owl:DatatypeProperty ;
+    rdfs:label "biopaxRef"@en ;
+    rdfs:comment "Reuse of references defined by BioPAX."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Pathway,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    rdfs:seeAlso <http://www.biopax.org/release/biopax-level3.owl#PublicationXref> ;
+    skos:inScheme wp: .
+
+wp:boardHeight a owl:DatatypeProperty ;
+    rdfs:label "boardHeight"@en ;
+    rdfs:comment "Range minimum is zero."@en ;
+    rdfs:range wp:Pathway,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:boardWidth a owl:DatatypeProperty ;
+    rdfs:label "boardWidth"@en ;
+    rdfs:comment "Range minimum is zero."@en ;
+    rdfs:range wp:Pathway,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:centerX a owl:DatatypeProperty ;
+    rdfs:label "centerX"@en ;
+    rdfs:comment "Middle of a pathway element in the x-direction."@en ;
+    rdfs:range wp:DataNode,
+        wp:InfoBox,
+        wp:Label,
+        wp:Legend,
+        wp:Shape,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:centerY a owl:DatatypeProperty ;
+    rdfs:label "centerY"@en ;
+    rdfs:comment "Middle of a pathway element in the y-direction."@en ;
+    rdfs:range wp:DataNode,
+        wp:InfoBox,
+        wp:Label,
+        wp:Legend,
+        wp:Shape,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:color a owl:DatatypeProperty ;
+    rdfs:label "color"@en ;
+    rdfs:comment "The color to be used for visualization."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Interaction,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:hexBinary ;
+    skos:inScheme wp: .
+
+wp:connectorType a owl:DatatypeProperty ;
+    rdfs:label "connectorType"@en ;
+    rdfs:comment "Specifies a set of rules to govern layout of Graphical Lines and Interactions.  PathVisio (Java): Line Type and GPML: ConnectorType"@en ;
+    rdfs:range wp:GraphicalLine,
+        wp:Interaction,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:data-Source a owl:DatatypeProperty ;
+    rdfs:label "data-Source"@en ;
+    rdfs:comment "Deprecated: Not in use."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:database a owl:DatatypeProperty ;
+    rdfs:label "database"@en ;
+    rdfs:comment "Specifies the datasource for the identifier provided as an Xref.  Equivalent to http://vocabularies.bridgedb.org/ops#DataSource conventional name ."@en ;
+    rdfs:range wp:Xref,
+        xsd:string ;
+    rdfs:seeAlso <http://vocabularies.bridgedb.org/ops#DataSource> ;
+    skos:inScheme wp: .
+
+wp:email a owl:DatatypeProperty ;
+    rdfs:label "email"@en ;
+    rdfs:comment "Deprecated: An electronic mail address. Used to reference the author or maintainer of a pathway prior to WikiPathways."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:fillColor a owl:DatatypeProperty ;
+    rdfs:label "fillColor"@en ;
+    rdfs:comment "The hexidecimal color value used to paint the area of an object, not including its border."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:hexBinary ;
+    skos:inScheme wp: .
+
+wp:fontDecoration a owl:DatatypeProperty ;
+    rdfs:label "fontDecoration"@en ;
+    rdfs:comment "Deprecated: Not in use."@en ;
+    rdfs:range wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:fontName a owl:DatatypeProperty ;
+    rdfs:label "fontName"@en ;
+    rdfs:comment "The name of the set of printable text characters to be used for visualization."@en ;
+    rdfs:range wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:fontSize a owl:DatatypeProperty ;
+    rdfs:label "fontSize"@en ;
+    rdfs:comment "The point value for the size of the font."@en ;
+    rdfs:range wp:Label,
+        wp:Shape,
+        xsd:nonNegativeInteger ;
+    skos:inScheme wp: .
+
+wp:fontStrikethru a owl:DatatypeProperty ;
+    rdfs:label "fontStrikethru"@en ;
+    rdfs:comment "Deprecated: Not in use."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:fontStyle a owl:DatatypeProperty ;
+    rdfs:label "fontStyle"@en ;
+    rdfs:comment "The typographic style or font face applied to displayed text, e.g., Arial."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:fontWeight a owl:DatatypeProperty ;
+    rdfs:label "fontWeight"@en ;
+    rdfs:comment "Thickness of the font used, e.g a bold font would have more weight. Used for DataNodes, Labels and Shapes."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:graphId a owl:DatatypeProperty ;
+    rdfs:label "graphId"@en ;
+    rdfs:comment "A GraphId is a unique (per Pathway) identifier for a pathway element, such as DataNode, Interaction, GraphicalLine, Label, Point, Group, Shape, State and Anchor."@en ;
+    rdfs:range wp:Anchor,
+        wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Point,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:graphRef a owl:DatatypeProperty ;
+    rdfs:label "graphRef"@en ;
+    rdfs:comment "A GraphRef indicates a \"depends on\" or child/parent relationship between two Pathway elements. The element with the GraphRef is the child, and the element referred to by the GraphRef is the parent. The parent's GraphId will be specified by the child's GraphRef."@en ;
+    rdfs:range wp:Point,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:groupId a owl:DatatypeProperty ;
+    rdfs:label "groupId"@en ;
+    rdfs:comment "Uniquely identifies a gpml:Group in a gpml:Pathway."@en ;
+    rdfs:range wp:Group,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:groupRef a owl:DatatypeProperty ;
+    rdfs:label "groupRef"@en ;
+    rdfs:comment """A GroupRef indicates that its element is part of the gpml:Group with the specified GroupId.
+DataNode, GraphicalLine, Group, Interaction, Label and Shape can be part of a group."""@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:hasAnchor a owl:ObjectProperty ;
+    rdfs:label "hasAnchor"@en ;
+    rdfs:comment "Boolean property for the existence of an Anchor on a given line or interaction."@en ;
+    rdfs:range wp:Anchor,
+        wp:GraphicalLine,
+        wp:Interaction ;
+    skos:inScheme wp: .
+
+wp:hasAttribute a owl:ObjectProperty ;
+    rdfs:label "hasAttribute"@en ;
+    rdfs:comment "Boolean property for the existence of an Attribute class associated with a given object."@en ;
+    rdfs:range wp:Attribute,
+        wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Pathway,
+        wp:Shape,
+        wp:State ;
+    skos:inScheme wp: .
+
+wp:hasBiopax a owl:ObjectProperty ;
+    rdfs:label "hasBiopax"@en ;
+    rdfs:comment "Boolean property for the existence of a BioPax class associated with a given pathway."@en ;
+    rdfs:range wp:Biopax,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasComment a owl:ObjectProperty ;
+    rdfs:label "hasComment"@en ;
+    rdfs:comment "Boolean property for the existence of a Comment class associated with a given object."@en ;
+    rdfs:range wp:Comment,
+        wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Pathway,
+        wp:Shape,
+        wp:State ;
+    skos:inScheme wp: .
+
+wp:hasDataNode a owl:ObjectProperty ;
+    rdfs:label "hasDataNode"@en ;
+    rdfs:comment "Boolean property for the existence of a DataNode in a given pathway."@en ;
+    rdfs:range wp:DataNode,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasGraphicalLine a owl:ObjectProperty ;
+    rdfs:label "hasGraphicalLine"@en ;
+    rdfs:comment "Boolean property for the existence of a GraphicalLine in a given pathway."@en ;
+    rdfs:range wp:GraphicalLine,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasGroup a owl:ObjectProperty ;
+    rdfs:label "hasGroup"@en ;
+    rdfs:comment "Boolean property for the existence of a Group in a given pathway."@en ;
+    rdfs:range wp:Group,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasInfoBox a owl:ObjectProperty ;
+    rdfs:label "hasInfoBox"@en ;
+    rdfs:comment "Boolean property for the existence of an InfroBox in a given pathway."@en ;
+    rdfs:range wp:InfoBox,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasInteraction a owl:ObjectProperty ;
+    rdfs:label "hasInteraction"@en ;
+    rdfs:comment "Boolean property for the existence of an Interaction in a given pathway."@en ;
+    rdfs:range wp:Interaction,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasLabel a owl:ObjectProperty ;
+    rdfs:label "hasLabel"@en ;
+    rdfs:comment "Boolean property for the existence of a Label in a given pathway."@en ;
+    rdfs:range wp:Label,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasLegend a owl:ObjectProperty ;
+    rdfs:label "hasLegend"@en ;
+    rdfs:comment "Boolean property for the existence of a Legend in a given pathway."@en ;
+    rdfs:range wp:Legend,
+        wp:Pathway ;
+    skos:inScheme wp: .
+
+wp:hasPoint a owl:ObjectProperty ;
+    rdfs:label "hasPoint"@en ;
+    rdfs:comment "Boolean property for the existence of a Point in a given line or interaction."@en ;
+    rdfs:range wp:GraphicalLine,
+        wp:Interaction,
+        wp:Point ;
+    skos:inScheme wp: .
+
+wp:hasPublicationXref a owl:ObjectProperty ;
+    rdfs:label "hasPublicationXref"@en ;
+    rdfs:comment "Boolean property for the existence of a PublicationXref associated with a given object."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Group,
+        wp:Interaction,
+        wp:Label,
+        wp:Pathway,
+        wp:PublicationXref,
+        wp:Shape,
+        wp:State ;
+    skos:inScheme wp: .
+
+wp:hasShape a owl:ObjectProperty ;
+    rdfs:label "hasShape"@en ;
+    rdfs:comment "Boolean property for the existence of a Shape in a given pathway."@en ;
+    rdfs:range wp:Pathway,
+        wp:Shape ;
+    skos:inScheme wp: .
+
+wp:hasState a owl:ObjectProperty ;
+    rdfs:label "hasState"@en ;
+    rdfs:comment "Boolean property for the existence of a State in a given pathway."@en ;
+    rdfs:range wp:Pathway,
+        wp:State ;
+    skos:inScheme wp: .
+
+wp:hasXref a owl:ObjectProperty ;
+    rdfs:label "hasXref"@en ;
+    rdfs:comment "Boolean property for the existence of an Xref associated with a given object."@en ;
+    rdfs:range wp:DataNode,
+        wp:Interaction,
+        wp:State,
+        wp:Xref ;
+    skos:inScheme wp: .
+
+wp:height a owl:DatatypeProperty ;
+    rdfs:label "height"@en ;
+    rdfs:comment "The pixel value for the y-dimensional length of a given object."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:href a owl:DatatypeProperty ;
+    rdfs:label "href"@en ;
+    rdfs:comment "The hyperlink optionally specified in a Label."@en ;
+    rdfs:range wp:Label,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:id a owl:DatatypeProperty ;
+    rdfs:label "id"@en ;
+    rdfs:comment "The identifier of a PublicationXref or Xref object."@en ;
+    rdfs:range wp:PublicationXref,
+        wp:Xref,
+        xsd:string ;
+    rdfs:seeAlso <http://www.biopax.org/release/biopax-level3.owl#id> ;
+    skos:inScheme wp: .
+
+wp:key a owl:DatatypeProperty ;
+    rdfs:label "key"@en ;
+    rdfs:comment "Key of the key/value pair in the Attribute class."@en ;
+    rdfs:range wp:Attribute,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:last-Modified a owl:DatatypeProperty ;
+    rdfs:label "last-Modified"@en ;
+    rdfs:comment "The date of the last modification of the pathway."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:license a owl:DatatypeProperty ;
+    rdfs:label "license"@en ;
+    rdfs:comment "The license of a pathway."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:lineStyle a owl:DatatypeProperty ;
+    rdfs:label "lineStyle"@en ;
+    rdfs:comment "The visual appearance of a line or border, e.g., Solid or Broken."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Interaction,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:lineThickness a owl:DatatypeProperty ;
+    rdfs:label "lineThickness"@en ;
+    rdfs:comment "The pixel value for the width of a given line, interaction or border."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Interaction,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:maintainer a owl:DatatypeProperty ;
+    rdfs:label "maintainer"@en ;
+    rdfs:comment "The maintainer of the pathway. Currently not used in WP."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:name a owl:DatatypeProperty ;
+    rdfs:label "name"@en ;
+    rdfs:comment "The name of a pathway."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:organism a owl:DatatypeProperty ;
+    rdfs:label "organism"@en ;
+    rdfs:comment "The scientific name (e.g., Homo sapiens) of the species being described by the pathway."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:position a owl:DatatypeProperty ;
+    rdfs:label "position"@en ;
+    rdfs:comment "Proportional distance of an anchor along the line it belongs to, between 0 and 1."@en ;
+    rdfs:range wp:Anchor,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:relX a owl:DatatypeProperty ;
+    rdfs:label "relX"@en ;
+    rdfs:comment "RelX is the x-coordinate used when a point or state is linked to a another object - relative coordinate to the object that it is linked to (0,0 - center, 1,1 - bottom-right)."@en ;
+    rdfs:range wp:Point,
+        wp:State,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:relY a owl:DatatypeProperty ;
+    rdfs:label "relY"@en ;
+    rdfs:comment "RelY is the y-coordinate used when a point or state is linked to a another object - relative coordinate to the object that it is linked to (0,0 - center, 1,1 - bottom-right)."@en ;
+    rdfs:range wp:Point,
+        wp:State,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:rotation a owl:DatatypeProperty ;
+    rdfs:label "rotation"@en ;
+    rdfs:comment "The degree value of angular offset relative to the center of a given object."@en ;
+    rdfs:range wp:Shape,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:shape a owl:DatatypeProperty ;
+    rdfs:label "shape"@en ;
+    rdfs:comment "The visual representation of an anchor, e.g., Circle or None."@en ;
+    rdfs:range wp:Anchor,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:shapeType a owl:DatatypeProperty ;
+    rdfs:label "shapeType"@en ;
+    rdfs:comment """Currently: Specifies the glyph (graphical representation) to use for GPML elements (DataNode, Label, Shape, State).
+
+Proposed: Expand it to also describe Anchors. It should replace the term currently used to specify the graphical representation of an Anchor. The current term is "Shape," which conflicts with the GPML element named "Shape." See details for term "Shape.\""""@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:source a owl:DatatypeProperty ;
+    rdfs:label "source"@en ;
+    rdfs:comment "The author, reference or category of a comment. Used to help parse pathway-level comments, e.g., the descriptions displayed at WikiPathways.org are comments with source=\"WikiPathways-description\"."@en ;
+    rdfs:range wp:Commnet,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:stateType a owl:DatatypeProperty ;
+    rdfs:label "stateType"@en ;
+    rdfs:comment "A free text field to describe the nature or category of a given state."@en ;
+    rdfs:range wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:style a owl:DatatypeProperty ;
+    rdfs:label "style"@en ;
+    rdfs:comment "The type of Group, e.g., Complex."@en ;
+    rdfs:range wp:Group,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:textlabel a owl:DatatypeProperty ;
+    rdfs:label "textlabel"@en ;
+    rdfs:comment "TextLabel of an object (DataNode, Group, Label, Shape, State)."@en ;
+    rdfs:range wp:DataNode,
+        wp:Group,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:type a owl:DatatypeProperty ;
+    rdfs:label "type"@en ;
+    rdfs:comment "Specifies the type of an object (DataNode, GraphicalLine, Interaction)."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Interaction,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:valign a owl:DatatypeProperty ;
+    rdfs:label "valign"@en ;
+    rdfs:comment " Vertical alignment of displayed text, e.g., Top, Middle, Bottom."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:value a owl:DatatypeProperty ;
+    rdfs:label "value"@en ;
+    rdfs:comment "Value of the key/value pair in the Attribute class."@en ;
+    rdfs:range wp:Attribute,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:version a owl:DatatypeProperty ;
+    rdfs:label "version"@en ;
+    rdfs:comment "The version of a Pathway (currently not used in WP)."@en ;
+    rdfs:range wp:Pathway,
+        xsd:string ;
+    skos:inScheme wp: .
+
+wp:width a owl:DatatypeProperty ;
+    rdfs:label "width"@en ;
+    rdfs:comment "The pixel value for the x-dimensional length of a given object."@en ;
+    rdfs:range wp:DataNode,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:x a owl:DatatypeProperty ;
+    rdfs:label "x"@en ;
+    rdfs:comment "The x-coordinate of a point in the 2-dimensional plane in which a pathway is drawn."@en ;
+    rdfs:range wp:Point,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:y a owl:DatatypeProperty ;
+    rdfs:label "y"@en ;
+    rdfs:comment "The y-coordinate of a point in the 2-dimensional plane in which a pathway is drawn."@en ;
+    rdfs:range wp:Point,
+        xsd:float ;
+    skos:inScheme wp: .
+
+wp:zorder a owl:DatatypeProperty ;
+    rdfs:label "zorder"@en ;
+    rdfs:comment "Indicates the zorder of the object in the pathway."@en ;
+    rdfs:range wp:DataNode,
+        wp:GraphicalLine,
+        wp:Interaction,
+        wp:Label,
+        wp:Shape,
+        wp:State,
+        xsd:integer ;
+    skos:inScheme wp: .
+
+wp:Biopax a owl:Class ;
+    rdfs:label "Biopax"@en ;
+    rdfs:comment "Element used to embed Biopax (namespace: http://www.biopax.org/release/biopax-level3.owl) content in a GPML document."@en ;
+    skos:inScheme wp: .
+
+wp:Comment a owl:Class ;
+    rdfs:label "Comment"@en ;
+    rdfs:comment "Elements used to provide descriptions and arbitrary notes for a given object."@en ;
+    skos:inScheme wp: .
+
+wp:PublicationXref a owl:Class ;
+    rdfs:label "PublicationXref"@en ;
+    rdfs:comment "Defines a literature reference. Refers to a BioPAX definition."@en ;
+    rdfs:seeAlso <http://www.biopax.org/owldoc/Level3/classes/PublicationXref___-1968381200.html> ;
+    skos:inScheme wp: .
+
+wp:Attribute a owl:Class ;
+    rdfs:label "Attribute"@en ;
+    rdfs:comment "Element used to specify key/value paired information for a given object."@en ;
+    skos:inScheme wp: .
+
+wp:InfoBox a owl:Class ;
+    rdfs:label "InfoBox"@en ;
+    rdfs:comment "Currently just a placeholder -- not used."@en ;
+    skos:inScheme wp: .
+
+wp:Legend a owl:Class ;
+    rdfs:label "Legend"@en ;
+    rdfs:comment "An explanatory list of the colors used for visualizing data on the pathway. Not currently used."@en ;
+    skos:inScheme wp: .
+
+wp:Xref a owl:Class ;
+    rdfs:label "Xref"@en ;
+    rdfs:comment """Reference to a database entry that matches the node
+in the pathway. It is a combination of an identifier of the entity and an
+identifier of the database in which the entity is found."""@en ;
+    skos:inScheme wp: .
+
+wp:Anchor a owl:Class ;
+    rdfs:label "Anchor"@en ;
+    rdfs:comment "A connection point on a graphical line or an interaction, where another graphical line or interaction can be connected."@en ;
+    skos:inScheme wp: .
+
+wp:Point a owl:Class ;
+    rdfs:label "Point"@en ;
+    rdfs:comment "A location in 2-dimensional space defined by x and y coordinates."@en ;
+    skos:inScheme wp: .
+
+wp:Group a owl:Class ;
+    rdfs:label "Group"@en ;
+    rdfs:comment "A collection of structurally or functionally similar or related pathway elements."@en ;
+    skos:inScheme wp: .
+
+wp:GraphicalLine a owl:Class ;
+    rdfs:label "GraphicalLine"@en ;
+    rdfs:comment "A visual annotation, often used to partition space or connect other annotation, e.g., Shapes. An Xref can not be specified for GraphicalLines (in contrast to Interactions)."@en ;
+    skos:inScheme wp: .
+
+wp:Interaction a owl:Class ;
+    rdfs:label "Interaction"@en ;
+    rdfs:comment "Defines the biochemical relationship between DataNodes or with Anchors on other Interactions. An Xref can be specified for Interactions (in contrast to GraphicalLines)."@en ;
+    skos:inScheme wp: .
+
+wp:State a owl:Class ;
+    rdfs:label "State"@en ;
+    rdfs:comment "A particular condition, mode or modification of an entity, e.g., phosphorylated, activated, mutated, SNP, etc."@en ;
+    skos:inScheme wp: .
+
+wp:DataNode a owl:Class ;
+    rdfs:label "DataNode"@en ;
+    rdfs:comment "Denotes a biological entity that forms a node in a pathway and has some biological meaning associated with it. For a list of the gpml:DataNode types supported at WikiPathways, see subclasses of wp:DataNode or the wpTypes vocabulary defined for use in applications.."@en ;
+    skos:inScheme wp: .
+
+wp:Pathway a owl:Class ;
+    rdfs:label "Pathway"@en ;
+    rdfs:comment "A graph diagram representing a biological process as a set of interactions and relationships among genes, proteins, metabolites, and other factors in the context of cellular compartments, tissues and organisms."@en ;
+    skos:inScheme wp: .
+
+wp:Label a owl:Class ;
+    rdfs:Label "Label"@en ;
+    rdfs:comment "A text field which can be used to annotate any aspect of a pathway."@en ;
+    skos:inScheme wp: .
+
+wp:Shape a owl:Class ;
+    rdfs:label "Shape"@en ;
+    rdfs:comment "Shape can refer to two different things in GPML, both of which are associated with graphical elements."@en ;
+    skos:inScheme wp: .
+
+wp: a owl:Ontology,
+        skos:ConceptScheme ;
+    rdfs:label "WikiPathways GPML Vocabulary"@en ;
+    rdfs:seeAlso <http://www.wikipathways.org/> ;
+    owl:versionIRI <http://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#> .
+
+
