@@ -22,12 +22,12 @@ Navigate to the `/home/MarvinMartens/WikiPathways` folder, where the `import` an
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-void.ttl
-    wget -O wpvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/wp#
-    wget -O gpmlvocab.ttl https://www.w3.org/2012/pyRdfa/extract?uri=http://vocabularies.wikipathways.org/gpml#
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-void.ttl
+    wget -O wpvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/wpvocab.ttl
+    wget -O gpmlvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/gpmlvocab.ttl
     wget -O PathwayOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/lastSuccessfulBuild/artifact/pw.ttl
     wget -O DiseaseOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/lastSuccessfulBuild/artifact/doid.ttl
     wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
@@ -62,7 +62,7 @@ Combine all separate `.ttl` files in one single file by entering the following:
 
 Also, be sure to download the most recent VoID file separately, naming it `void`:
     
-    wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20210710-rdf-void.ttl
+    wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-void.ttl
 
 
 ## Step 5 - Enter SQL and reset the Virtuoso service
@@ -125,10 +125,14 @@ To check the status of the loaded data, the `ll_status` in the `load_list` shoul
 
     select * from DB.DBA.load_list;
 
-## Step 8 - Quit the SQL
+## Step 8 - Quit the SQL and restart Docker container
 To quit the SQL:
 
     quit;
+    
+To restart the Docker container
+
+    sudo docker restart wikipathways-virtuoso-httpd
 
 ## Step 9 - Move the void file to ./well-known
 Enter the docker container:
