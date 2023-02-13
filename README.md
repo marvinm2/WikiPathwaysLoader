@@ -125,14 +125,10 @@ To check the status of the loaded data, the `ll_status` in the `load_list` shoul
 
     select * from DB.DBA.load_list;
 
-## Step 8 - Quit the SQL and restart Docker container
+## Step 8 - Quit the SQL
 To quit the SQL:
 
     quit;
-    
-To restart the Docker container
-
-    sudo docker restart wikipathways-virtuoso-httpd
 
 ## Step 9 - Move the void file to ./well-known
 Enter the docker container:
