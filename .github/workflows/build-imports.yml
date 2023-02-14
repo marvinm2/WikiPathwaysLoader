@@ -1,0 +1,127 @@
+name: Build imports
+on:
+# add chron?
+  workflow_dispatch:
+
+jobs:
+    conversion-PW:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get robot
+        run: |
+            wget https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
+            wget https://github.com/ontodev/robot/releases/download/v1.9.0/robot.jar
+      - name: Remove current files, set up artifacts folder
+        run: |
+            rm -f data/pw.ttl
+            mkdir artifacts
+      - name: Get latest version of the ontology
+        run: curl -o data/pw.owl -m 1000 -L http://purl.obolibrary.org/obo/pw.owl
+      - name: ROBOT convert
+        run: sh ./robot convert --input data/pw.owl --output artifacts/pw.ttl
+      - name: upload pw.ttl as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: pw
+          path: artifacts
+      
+    conversion-DOID:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get robot
+        run: |
+            wget https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
+            wget https://github.com/ontodev/robot/releases/download/v1.9.0/robot.jar
+      - name: Remove current files
+        run: |
+            rm -f data/doid.ttl
+            mkdir artifacts
+      - name: Get latest version of the ontology
+        run: curl -o data/doid.owl -m 420 https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/main/src/ontology/doid.owl
+      - name: ROBOT convert
+        run: sh ./robot convert --input data/doid.owl --output artifacts/doid.ttl
+      - name: upload doid.ttl as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: doid
+          path: artifacts
+        
+    conversion-CL:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get robot
+        run: |
+            wget https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
+            wget https://github.com/ontodev/robot/releases/download/v1.9.0/robot.jar
+      - name: Remove current files
+        run: |
+            rm -f data/cl.ttl
+            mkdir artifacts
+      - name: Get latest version of the ontology
+        run: curl -o data/cl.owl -m 1000 https://raw.githubusercontent.com/obophenotype/cell-ontology/master/cl.owl
+      - name: ROBOT convert
+        run: sh ./robot convert --input data/cl.owl --output artifacts/cl.ttl
+      - name: upload cl.ttl as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: cl
+          path: artifacts
+    slim-CHEBI:
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get robot and slimmer
+        run: |
+            wget https://raw.githubusercontent.com/ontodev/robot/master/bin/robot
+            wget https://github.com/ontodev/robot/releases/download/v1.9.0/robot.jar
+            wget -N https://github.com/enanomapper/slimmer/releases/download/v1.0.1/slimmer-1.0.1-jar-with-dependencies.jar
+      - name: Remove current files
+        run: |
+            rm -f data/chebi-slim.ttl
+            mkdir artifacts
+      - name: Get latest version of the ontology
+        run: |
+            wget https://raw.githubusercontent.com/enanomapper/ontologies/master/config/chebi.props
+            wget -N `grep "owl=" chebi.props | cut -d'=' -f2`
+      - name: Retrieve WP CHEBI terms (config file for Slimmer)
+        run: |
+            echo "SELECT DISTINCT ?chebi WHERE { [] wp:bdbChEBI ?chebi }" > chebi.rq
+            curl -H "Accept: text/tab-separated-values" --data-urlencode query@chebi.rq -G https://sparql.wikipathways.org/sparql -o chebi.tsv
+            grep -v "\"chebi\"" chebi.tsv > chebi2.tsv
+            sed -i 's/"https:\/\/identifiers.org\/chebi\/CHEBI:/+U:http:\/\/purl.obolibrary.org\/obo\/CHEBI_/' chebi2.tsv
+            sed -i 's/\"//' chebi2.tsv
+            cp chebi2.tsv chebi.iris
+      - name: Slim CHEBI and convert to turtle
+        run: |
+            java -cp slimmer-1.0.1-jar-with-dependencies.jar com.github.enanomapper.Slimmer .
+            sh ./robot convert --input chebi-slim.owl --output artifacts/chebi-slim.ttl
+      - name: upload chebi-slim.ttl as an artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: chebi-slim
+          path: artifacts
+    push-changes:
+      needs: [conversion-PW,conversion-CL,conversion-DOID,slim-CHEBI]
+      runs-on: ubuntu-latest
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Download the artifacted turtle files
+        uses: actions/download-artifact@master
+        with:
+          path: artifacts
+      - name: Commit and push artifacts
+        run: |
+            find artifacts -name "*.ttl" -exec mv "{}" ./data \;
+            git add data/*.ttl
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git commit -m "Automated build" data/*.ttl
+            git push -f
