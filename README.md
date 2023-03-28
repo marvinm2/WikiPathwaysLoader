@@ -76,6 +76,7 @@ Prior to loading the new data, the Virtuoso server has to be restarted and the o
     RDF_GLOBAL_RESET();
 
     DELETE FROM load_list WHERE ll_graph = 'http://rdf.wikipathways.org/';
+    DELETE FROM load_list WHERE ll_graph = 'servicedescription';
     
 To check if the files are removed from the `load_list`, enter:
 
@@ -120,6 +121,7 @@ Define the permissions to use the SPARQL endpoint with:
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
     ld_dir('/import', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
+    ld_dir('/import', 'ServiceDescription.ttl', 'servicedescription');
     rdf_loader_run();
 
 To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. This step will also indicate whether the Turtle file is correct or causes an error in Virtuoso. Do this using:
