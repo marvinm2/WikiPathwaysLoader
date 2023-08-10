@@ -169,3 +169,18 @@ Make sure to test a federated SPARQL query to make sure federated queries are ru
 TO FIX: the snorql UI doesn't like federated queries. Try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
 
 
+## FAQ/Handline Error messages
+
+In case the SPARQL endpoint is down, try the following steps:
+- Log into the server (Step 2)
+- Check if the docker container with the Virtuoso Endpoint is running (named 'wikipathways-virtuoso-httpd'):
+
+    sudo docker ps
+
+- If the container is not running, run it again (tba @marvinMartens)
+- If the container is running, try to login to the container in the exec mode (Step 5).
+- If you get the following error message ('*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'), restart the docker container 
+
+    sudo docker restart wikipathways-virtuoso-httpd
+
+
