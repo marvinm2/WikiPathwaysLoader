@@ -61,10 +61,12 @@ Combine all separate `.ttl` files in one single file by entering the following:
     mv ../WikiPathways.ttl .
 
 Also, be sure to copy the `ServiceDescription.ttl` in the folder and download the most recent VoID file separately, naming it `void`:
-    
+``` 
     cp ../ServiceDescription.ttl .
+```
+```
     wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-void.ttl
-
+```
 
 ## Step 5 - Enter SQL and reset the Virtuoso service
 To enter the OpenLink Virtuoso Interactive SQL, enter:
