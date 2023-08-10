@@ -1,4 +1,4 @@
-# WikiPathwaysloader
+# Loading and configuring the WikiPathways SPARQL endpoint
 
 This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [openlink/virtuoso-opensource-7](https://hub.docker.com/r/openlink/virtuoso-opensource-7/) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
 
@@ -33,7 +33,7 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
     wget -O chebi-slim.ttl https://jenkins.bigcat.unimaas.nl/job/WikiPathways%20-%20CHEBI/lastSuccessfulBuild/artifact/chebi-slim.ttl
 
-## Step A for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
+## Step 3 additional for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
 Navigate to the `/home/MarvinMartens/SARS-CoV-2-WikiPathways` and renew the folder by using
 
     git pull
@@ -142,9 +142,13 @@ Move the void file to the `.well-known` folder:
 
     cp ../import/void ../usr/local/apache2/htdocs/.well-known/
 
+Quit the exec mode:
+    
+    exit
+
 ## Step 10 - Test if everything went well
 
-The last step of this protocol is the testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises of three steps:
+The last step of this protocol is testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises of three steps:
 
 #### Metadata 
 
@@ -152,7 +156,7 @@ Use the next query to validate that the right dataset is loaded. It should norma
 
 ### Counts of data
 
-The following set of SPARQL queries involve the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF. These SPARQL queries are located in the `A. Metadata/datacounts` folder in the Query panel
+The following set of SPARQL queries involves the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF. These SPARQL queries are located in the `A. Metadata/datacounts` folder in the Query panel
 
 - Count of Pathways Loaded 
 - Count total amount of DataNodes 
@@ -164,23 +168,51 @@ The following set of SPARQL queries involve the counts of the dataset for variou
 
 
 ### Federated SPARQL query 
-Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries.
+Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries. For example, with the following query:
 
-TO FIX: the snorql UI doesn't like federated queries. Try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
+```sparql
+PREFIX aopo:	<http://aopkb.org/aop_ontology#> 
+PREFIX cheminf:	<http://semanticscience.org/resource/CHEMINF_> 
 
+SELECT DISTINCT (str(?title) as ?pathwayName) ?chemical ?ChEBI ?ChemicalName  ?mappedid ?LinkedStressor 
 
-## FAQ/Handline Error messages
+WHERE {
+   ?pathway a wp:Pathway ; wp:organismName "Homo sapiens"; dcterms:identifier ?WPID ; dc:title ?title . 
+   ?chemical a wp:Metabolite; dcterms:isPartOf ?pathway; wp:bdbChEBI ?mappedid . 
+   SERVICE <https://aopwiki.rdf.bigcat-bioinformatics.org/sparql/>{
+    ?mappedid a cheminf:000407; cheminf:000407 ?ChEBI .
+    ?cheLook a cheminf:000000; dc:title ?ChemicalName ; dcterms:isPartOf ?LinkedStressor ;  skos:exactMatch ?mappedid .
+   }}
+limit 1
+```
 
-In case the SPARQL endpoint is down, try the following steps:
-- Log into the server (Step 2)
-- Check if the docker container with the Virtuoso Endpoint is running (named 'wikipathways-virtuoso-httpd'):
+Also accessible with [this permalink](https://bit.ly/443CJBl)
 
-    sudo docker ps
+If the SNORQL UI does not work directly with the federated query, try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
 
-- If the container is not running, run it again (tba @marvinMartens)
-- If the container is running, try to login to the container in the exec mode (Step 5).
-- If you get the following error message ('*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'), restart the docker container 
+## In case of SPARQL endpoint down
 
-    sudo docker restart wikipathways-virtuoso-httpd
-
+In case the SPARQL endpoint is down, perform the following steps:
+### Log into the server 
+(see Step 2)
+### Check if the docker container with the Virtuoso Endpoint is running or has stopped. 
+The Docker container should be called `wikipathways-virtuoso-httpd`. To check for running containers:
+```
+sudo docker ps
+```
+To check for a stopped container:
+```
+sudo docker ps -a
+```
+### If the container is not running
+Run it again with:
+```
+sudo docker start wikipathways-virtuoso-httpd
+```
+### If the container is running
+Try to login to the container in the exec mode (Step 5).
+If you get the following error message ('*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'), restart the docker container with the command:
+```
+sudo docker restart wikipathways-virtuoso-httpd
+```
 
