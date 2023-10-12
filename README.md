@@ -22,16 +22,16 @@ Navigate to the `/home/MarvinMartens/WikiPathways` folder, where the `import` an
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-void.ttl
     wget -O wpvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/wpvocab.ttl
     wget -O gpmlvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/gpmlvocab.ttl
-    wget -O PathwayOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20PW/lastSuccessfulBuild/artifact/pw.ttl
-    wget -O DiseaseOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20DOID/lastSuccessfulBuild/artifact/doid.ttl
+    wget -O PathwayOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
+    wget -O DiseaseOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
     wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
-    wget -O chebi-slim.ttl https://jenkins.bigcat.unimaas.nl/job/WikiPathways%20-%20CHEBI/lastSuccessfulBuild/artifact/chebi-slim.ttl
+    wget -O chebi-slim.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl
 
 ## Step 3 additional for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
 Navigate to the `/home/MarvinMartens/SARS-CoV-2-WikiPathways` and renew the folder by using
@@ -65,13 +65,13 @@ Also, be sure to copy the `ServiceDescription.ttl` in the folder and download th
 cp ../ServiceDescription.ttl .
 ```
 ```
-wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20220910-rdf-void.ttl
+wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-void.ttl
 ```
 
 ## Step 5 - Enter SQL and reset the Virtuoso service
 To enter the OpenLink Virtuoso Interactive SQL, enter:
 
-    sudo docker exec -i wikipathways-virtuoso-httpd isql-v 1111
+    sudo docker exec -i wikipathways-virtuoso-httpd-23-10 isql-v 1111
 
 Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time:
 
@@ -138,7 +138,7 @@ To quit the SQL:
 ## Step 9 - Move the void file to ./well-known
 Enter the docker container:
 
-    sudo docker exec -it wikipathways-virtuoso-httpd bash
+    sudo docker exec -it wikipathways-virtuoso-httpd-23-10 bash
     
 Move the void file to the `.well-known` folder:
 
