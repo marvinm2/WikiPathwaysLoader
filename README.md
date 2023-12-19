@@ -45,7 +45,7 @@ Then copy the 3 zip files to the `virtuoso-httpd-docker` folder.
 
 Return to the `/home/MarvinMartens/WikiPathways/import` folder.
 
-## Step 4 - Unzip and contatenate all files
+## Step 4 - Unzip and concatenate all files
 
 After downloading and copying all zip files into the `import` folder, the `.zip` files should be unzipped with the command:
 
