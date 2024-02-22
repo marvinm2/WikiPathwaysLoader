@@ -71,7 +71,7 @@ wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-
 ## Step 5 - Enter SQL and reset the Virtuoso service
 To enter the OpenLink Virtuoso Interactive SQL, enter:
 
-    sudo docker exec -i wikipathways-virtuoso-httpd-23-10 isql-v 1111
+    sudo docker exec -i wikipathways-virtuoso isql 1111
 
 Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time:
 
@@ -122,8 +122,8 @@ Define the permissions to use the SPARQL endpoint with:
 ## Step 7 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
-    ld_dir('/import', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
-    ld_dir('/import', 'ServiceDescription.ttl', 'servicedescription');
+    ld_dir('data', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
+    ld_dir('data', 'ServiceDescription.ttl', 'servicedescription');
     rdf_loader_run();
 
 To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. This step will also indicate whether the Turtle file is correct or causes an error in Virtuoso. Do this using:
@@ -136,13 +136,9 @@ To quit the SQL:
     quit;
 
 ## Step 9 - Move the void file to ./well-known
-Enter the docker container:
-
-    sudo docker exec -it wikipathways-virtuoso-httpd-23-10 bash
-    
 Move the void file to the `.well-known` folder:
 
-    cp ../import/void ../usr/local/apache2/htdocs/.well-known/
+    cp void snorql-extended/.well-known/
 
 Quit the exec mode:
     
