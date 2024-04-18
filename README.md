@@ -134,10 +134,10 @@ To quit the SQL:
 
     quit;
 
-## Step 8 - Move the void file to ./well-known
+## Step 8 - Move the void file to /snorql-extended./well-known
 Move the void file to the `.well-known` folder:
 
-    cp db/data/void snorql-extended/.well-known/
+    cp void ../../../WikiPathways-EP/snorql-extended/.well-known/
 
 Quit the exec mode:
     
@@ -145,7 +145,7 @@ Quit the exec mode:
 
 ## Step 9 - Test if everything went well
 
-The last step of this protocol is testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises three steps:
+The last step of this protocol is testing whether the loading of new data worked. For that, visit the WikiPathways SNORQL UI through the `[SERVER IP]:[PORT]` where the port refers to the `wikipathways-snorql` or `wikipathways-snorql2` and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises three steps:
 
 #### Metadata 
 
