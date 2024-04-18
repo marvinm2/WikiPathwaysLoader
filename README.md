@@ -1,6 +1,6 @@
 # Loading and configuring the WikiPathways SPARQL endpoint
 
-This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [openlink/virtuoso-opensource-7](https://hub.docker.com/r/openlink/virtuoso-opensource-7/) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
+This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [ammar257ammar/Snorql-UI](https://github.com/ammar257ammar/Snorql-UI) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194"><img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/BiGCaTLOGO.png" width="194" height="194">
 
@@ -11,21 +11,32 @@ Check the sizes of the files in the RDF folder of the new set on [data.wikipathw
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/datawikipathways.png">
 
-## Step 2 - Access the server
-Currently, the service runs on 81.169.200.64
+## Step 2 - Access the server and check which of the two instances is live
+Currently, the service runs on `Strato1`. If this is incorrect, check the BiGCaT Service spreadsheet. Access the server with your credentials.
 
+There are 2 instances of the WikiPathways snorql UI, one of which is live through [WikiPathways SPARQL endpoint](sparql.wikipathways.org) and the other one is for testing before going live. The loading protocol below should be done on the instance that is not live. After loading, the URL proxy is switched between the two instances. To check the current live instance, inspect the file `/etc/nginx/sites-enabled/wikipathways` and take note of the two ports that are indicated. 
+
+Next, use the following to identify which of the instances is live:
+
+    sudo docker ps | grep -w wikipathways
+
+If the current live instance is `wikipathways-snorql` and `wikipathways-virtuoso`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2` for the loading of data. If the current live instance is `wikipathways-snorql2` and `wikipathways-virtuoso2`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2`.
 
 ## Step 3 - Enter the folder called 'import'
-Navigate to the `/home/MarvinMartens/WikiPathways` folder, where the `import` and `data` folders are located. The `import` folder will be used to store all Turtle files and create the main WikiPathways.ttl. If the folder isn't empty (for example, it has data of last month), empty the folder.
+Within the `/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2` folder, you can find the `db` folder. The `db/data/` folder will be used to store all Turtle files and create the main WikiPathways.ttl. Move to that folder:
+
+    cd db/data
+
+If the folder is not empty (for example, it has data from last month), empty the folder.
 
     rm -r *
 
 To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-void.ttl
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-gpml.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-wp.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-authors.zip
+    wget http://data.wikipathways.org/current/rdf/wikipathways-rdf-void.ttl
     wget -O wpvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/wpvocab.ttl
     wget -O gpmlvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/gpmlvocab.ttl
     wget -O PathwayOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
@@ -33,19 +44,7 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
     wget -O chebi-slim.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl
 
-## Step 3 additional for SARS-CoV-2 - Renew the SARS-CoV-2 pathway RDF
-Navigate to the `/home/MarvinMartens/SARS-CoV-2-WikiPathways` and renew the folder by using
-
-    git pull
-
-Then copy the 3 zip files to the `virtuoso-httpd-docker` folder.
-
-    cp wikipathways-SARS-CoV-2-rdf-wp.zip ../import
-    cp wikipathways-SARS-CoV-2-rdf-gpml.zip ../import
-
-Return to the `/home/MarvinMartens/WikiPathways/import` folder.
-
-## Step 4 - Unzip and contatenate all files
+## Step 3 - Unzip and concatenate all files
 
 After downloading and copying all zip files into the `import` folder, the `.zip` files should be unzipped with the command:
 
@@ -62,14 +61,14 @@ Combine all separate `.ttl` files in one single file by entering the following:
 
 Also, be sure to copy the `ServiceDescription.ttl` in the folder and download the most recent VoID file separately, naming it `void`:
 ``` 
-cp ../ServiceDescription.ttl .
+cp ../../ServiceDescription.ttl .
 ```
 ```
-wget -O void http://data.wikipathways.org/current/rdf/wikipathways-20231010-rdf-void.ttl
+wget -O void http://data.wikipathways.org/current/rdf/wikipathways-rdf-void.ttl
 ```
 
-## Step 5 - Enter SQL and reset the Virtuoso service
-To enter the OpenLink Virtuoso Interactive SQL, enter:
+## Step 4 - Enter SQL and reset the Virtuoso service
+Enter the OpenLink Virtuoso Interactive SQL of the instance (be sure to replace `wikipathways-virtuoso` with `wikipathways-virtuoso2` to enter the right one):
 
     sudo docker exec -i wikipathways-virtuoso isql 1111
 
@@ -84,7 +83,7 @@ To check if the files are removed from the `load_list`, enter:
 
     select * from DB.DBA.load_list;
 
-## Step 6 - Loading the prefixes and permissions
+## Step 5 - Loading the prefixes and permissions
 While in the SQL, define the namespace prefixes by entering the following commands:
 
     log_enable(2);
@@ -119,7 +118,7 @@ Define the permissions to use the SPARQL endpoint with:
     grant select on "DB.DBA.SPARQL_SINV_2" to "SPARQL";
     grant execute on "DB.DBA.SPARQL_SINV_IMP" to "SPARQL";
 
-## Step 7 - Load the data and run the RDF loader
+## Step 6 - Load the data and run the RDF loader
 To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
 
     ld_dir('data', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
@@ -130,23 +129,23 @@ To check the status of the loaded data, the `ll_status` in the `load_list` shoul
 
     select * from DB.DBA.load_list;
 
-## Step 8 - Quit the SQL
+## Step 7 - Quit the SQL
 To quit the SQL:
 
     quit;
 
-## Step 9 - Move the void file to ./well-known
+## Step 8 - Move the void file to ./well-known
 Move the void file to the `.well-known` folder:
 
-    cp void snorql-extended/.well-known/
+    cp db/data/void snorql-extended/.well-known/
 
 Quit the exec mode:
     
     exit
 
-## Step 10 - Test if everything went well
+## Step 9 - Test if everything went well
 
-The last step of this protocol is testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises of three steps:
+The last step of this protocol is testing whether the loading of new data worked. For that, visit the [WikiPathways SPARQL endpoint](http://sparql.wikipathways.org) and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises three steps:
 
 #### Metadata 
 
@@ -188,29 +187,40 @@ Also accessible with [this permalink](https://bit.ly/443CJBl)
 
 If the SNORQL UI does not work directly with the federated query, try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
 
+### Final step: change the live instance to the right ports and restart nginx
+Update the `/etc/nginx/sites-enabled/wikipathways` file to have the correct ports of the updated instance:
+
+    sudo nano /etc/nginx/sites-enabled/wikipathways
+
+Then, restart nginx
+
+    sudo service nginx restart
+
 ## In case of SPARQL endpoint down
 
 In case the SPARQL endpoint is down, perform the following steps:
-### Log into the server 
-(see Step 2)
+### Log into the server and check which of the instances should be active
+See Step 2
 ### Check if the docker container with the Virtuoso Endpoint is running or has stopped. 
-The Docker container should be called `wikipathways-virtuoso-httpd`. To check for running containers:
-```
-sudo docker ps
-```
-To check for a stopped container:
-```
-sudo docker ps -a
-```
-### If the container is not running
-Run it again with:
-```
-sudo docker start wikipathways-virtuoso-httpd
-```
-### If the container is running
-Try to login to the container in the exec mode (Step 5).
-If you get the following error message ('*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'), restart the docker container with the command:
-```
-sudo docker restart wikipathways-virtuoso-httpd
-```
+The Docker container should be called `wikipathways-virtuoso`. To check for running containers:
 
+    sudo docker ps | grep -w wikipathways
+
+To check for a stopped container:
+
+    sudo docker ps -a | grep -w wikipathways
+
+### If the container is not running
+Enter the correct folder (`/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2`). Launch the service with:
+
+    sudo docker-compose up -d
+
+### If the container is running
+Try to log into the container in the exec mode (Step 4). If you get the following error message `'*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'`, do the following: Enter the correct folder (`/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2`). Restart the docker container with the commands:
+```
+sudo docker-compose down
+```
+```
+sudo docker compose up -d
+```
+This should resolve the issue. 
