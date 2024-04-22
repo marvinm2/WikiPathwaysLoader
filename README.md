@@ -1,6 +1,6 @@
 # Loading and configuring the WikiPathways SPARQL endpoint
 
-This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [ammar257ammar/Snorql-UI](https://github.com/ammar257ammar/Snorql-UI) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
+This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [wikipathways/snorql-extended](https://github.com/wikipathways/snorql-extended) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
 
 <img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194"><img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/BiGCaTLOGO.png" width="194" height="194">
 
