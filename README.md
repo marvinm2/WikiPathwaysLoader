@@ -20,7 +20,7 @@ Next, use the following to identify which of the instances is live:
 
     sudo docker ps | grep -w wikipathways
 
-If the current live instance is `wikipathways-snorql` and `wikipathways-virtuoso`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2` for the loading of data. If the current live instance is `wikipathways-snorql2` and `wikipathways-virtuoso2`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2`.
+If the current live instance is `wikipathways-snorql` and `wikipathways-virtuoso`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2` for the loading of data. If the current live instance is `wikipathways-snorql2` and `wikipathways-virtuoso2`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP`.
 
 ## Step 3 - Enter the folder called 'import'
 Within the `/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2` folder, you can find the `db` folder. The `db/data/` folder will be used to store all Turtle files and create the main WikiPathways.ttl. Move to that folder:
