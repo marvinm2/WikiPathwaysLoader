@@ -1,0 +1,51 @@
+name: Collect WikiPathways Counts
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+
+  # Automatic monthly run on 11th at 11 PM UTC
+  schedule:
+    - cron: '0 23 11 * *'
+
+jobs:
+  collect-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Make script executable
+        run: chmod +x scripts/collect_counts.py
+
+      - name: Collect WikiPathways counts
+        run: python scripts/collect_counts.py
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code WikiPathwayscounts.tsv || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add WikiPathwayscounts.tsv
+          git commit -m "Update WikiPathways counts for $(date +'%Y-%m')"
+          git push
+
+      - name: No changes detected
+        if: steps.check_changes.outputs.changed != 'true'
+        run: echo "No changes to WikiPathwayscounts.tsv, skipping commit"
