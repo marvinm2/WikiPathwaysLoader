@@ -6,7 +6,7 @@ on:
 
   # Automatic monthly run on 11th at 11 PM UTC
   schedule:
-    - cron: '0 23 11 * *'
+    - cron: '0 23 13 * *'
 
 jobs:
   collect-and-update:
