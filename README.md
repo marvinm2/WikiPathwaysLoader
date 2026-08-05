@@ -41,7 +41,7 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O gpmlvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/gpmlvocab.ttl
     wget -O PathwayOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
     wget -O DiseaseOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
-    wget -O CellOntology.ttl https://jenkins.bigcat.unimaas.nl/job/Ontology%20conversion%20-%20CL/lastSuccessfulBuild/artifact/cl.ttl
+    wget -O CellOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl
     wget -O chebi-slim.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl
 
 ## Step 3 - Unzip and concatenate all files
