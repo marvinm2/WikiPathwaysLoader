@@ -124,9 +124,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+      - name: Collect the turtle files into data/
+        run: find artifacts -name "*.ttl" -exec mv "{}" ./data \;
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install rdflib
+        run: pip install --quiet 'rdflib>=7,<8'
+      - name: Regenerate the ontology VoID description
+        run: python3 scripts/build_ontology_void.py
       - name: Commit and push artifacts
         run: |
-            find artifacts -name "*.ttl" -exec mv "{}" ./data \;
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
             git add data/*.ttl

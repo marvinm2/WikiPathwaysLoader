@@ -43,6 +43,7 @@ To download the data, go directly to [data.wikipathways.org/current/rdf](http://
     wget -O DiseaseOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
     wget -O CellOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl
     wget -O chebi-slim.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl
+    wget -O ontology-void.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/ontology-void.ttl
 
 ## Step 3 - Unzip and concatenate all files
 
@@ -50,7 +51,7 @@ After downloading and copying all zip files into the `import` folder, the `.zip`
 
     unzip \*.zip
     
-The remaining `wpvocab.ttl`, `gpmlvocab.ttl`, `chebi-slim.ttl`, and `...rdf-void.ttl` files should be moved into one of the created folders. 
+The remaining `wpvocab.ttl`, `gpmlvocab.ttl`, `chebi-slim.ttl`, `ontology-void.ttl`, and `...rdf-void.ttl` files should be moved into one of the created folders. 
 
     mv *.ttl wp
 
@@ -195,6 +196,30 @@ Update the `/etc/nginx/sites-enabled/wikipathways` file to have the correct port
 Then, restart nginx
 
     sudo service nginx restart
+
+## The ontology imports in `data/`
+
+Four ontology files are loaded alongside the WikiPathways RDF so that the ontology tags on
+pathways resolve to labels: `PathwayOntology.ttl`, `DiseaseOntology.ttl`, `CellOntology.ttl`
+and `chebi-slim.ttl`. They are built by the `Build imports` workflow
+(`.github/workflows/build-imports.yml`), which runs at 03:00 UTC on the 10th of each month and
+can also be dispatched by hand. The first three come from their OBO PURLs and are converted with
+ROBOT; the ChEBI slim is cut down by the eNanoMapper Slimmer to only the ChEBI terms
+WikiPathways annotates with, which it looks up from the live endpoint.
+
+`data/ontology-void.ttl` is the VoID description of those four datasets — version, release date,
+license, upstream source, the tool that converted it, triple and class counts. It is
+**generated, not edited**: the same workflow regenerates it with
+`scripts/build_ontology_void.py` after the ontologies are rebuilt, reading the facts out of the
+Turtle files themselves so the description cannot drift away from what is actually loaded. To
+rebuild it locally:
+
+    pip install 'rdflib>=7,<8'
+    python3 scripts/build_ontology_void.py
+
+The output is a pure function of the input files, so re-running it without an ontology change
+leaves the file untouched. `--check` verifies the committed file matches the data without
+writing anything.
 
 ## In case of SPARQL endpoint down
 
