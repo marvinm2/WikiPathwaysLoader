@@ -37,9 +37,17 @@
 -- below reproduce strato1's served document exactly — 178 triples, set-equal, verified against
 -- ~/WikiPathways-EP/snorql-extended/.well-known/void at the same 20260710 release vintage.
 --
--- Selecting on rdf:type rather than on a subject-URI prefix keeps the rule independent of the
--- release date embedded in every data.wikipathways.org subject, so it survives reloads unchanged.
--- foaf:Organization is safe as an unscoped selector: there is exactly one in the whole store.
+-- Selecting on rdf:type rather than on a subject-URI prefix avoids hardcoding the publisher. The
+-- prefix form needs an explicit Q131790020 term alongside the data.wikipathways.org prefix to reach
+-- all 178 triples, because the publisher node is a Wikidata IRI; if that entity ever changed, the
+-- rule would silently drop it. foaf:Organization picks it up generically, and is safe as an
+-- unscoped selector: there is exactly one in the whole store.
+--
+-- CORRECTION: an earlier version of this comment justified the type selector by saying it keeps the
+-- rule "independent of the release date embedded in every data.wikipathways.org subject". That is
+-- wrong. The prefix that was actually tested is the bare `https://data.wikipathways.org/`, which
+-- carries no date and would have survived reloads perfectly well. The hardcoded publisher above is
+-- the real, and smaller, advantage. Both forms are release-date independent.
 --
 -- After the next monthly reload this will also pick up the ontology datasets added by
 -- wikipathways/GPML2RDF PR #28, so the served document will stop being byte-equal to strato1's.
