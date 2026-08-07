@@ -1,251 +1,136 @@
-# Loading and configuring the WikiPathways SPARQL endpoint
+# WikiPathways SPARQL endpoint loader
 
-This repository contains files for the monthly update of the [WikiPathways SPARQL endpoint](sparql.wikipathways.org), which is deployed using the base [wikipathways/snorql-extended](https://github.com/wikipathways/snorql-extended) Docker image. The instructions below are for loading new data in the SPARQL endpoint.
+Vocabularies, ontology imports and loading scripts for the
+[WikiPathways SPARQL endpoint](https://sparql.wikipathways.org).
 
-<img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwaysLOGO.png" width="214" height="194"><img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/BiGCaTLOGO.png" width="194" height="194">
+<img src="WikiPathwaysLOGO.png" width="214" height="194"><img src="BiGCaTLOGO.png" width="194" height="194">
 
-Every month there is a new data release by WikiPathways, all of which are stored in [data.wikipathways.org](http://data.wikipathways.org/). The protocol for getting the data in the Virtuoso SPARQL endpoint will be described step by step.
+WikiPathways publishes a new RDF release every month at
+[data.wikipathways.org](https://data.wikipathways.org/current/rdf/). The endpoint is reloaded from
+that release, and on every reload the loader also fetches seven Turtle files **from this
+repository** and concatenates them into the store alongside the release data.
 
-## Step 1 - Check if the RDF generation was done correctly
-Check the sizes of the files in the RDF folder of the new set on [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) and whether they are of similar size, or slightly larger than the sizes shown in the screenshot below.
+That is the thing to understand before changing anything here: a stale or broken file in `data/`
+is stale or broken data in production. It is not a documentation repository.
 
-<img src="https://github.com/marvinm2/WikiPathwaysloader/blob/master/datawikipathways.png">
+## What the endpoint fetches from here
 
-## Step 2 - Access the server and check which of the two instances is live
-Currently, the service runs on `Strato1`. If this is incorrect, check the BiGCaT Service spreadsheet. Access the server with your credentials.
+Both loader paths download the same seven files from `master`:
 
-There are 2 instances of the WikiPathways snorql UI, one of which is live through [WikiPathways SPARQL endpoint](sparql.wikipathways.org) and the other one is for testing before going live. The loading protocol below should be done on the instance that is not live. After loading, the URL proxy is switched between the two instances. To check the current live instance, inspect the file `/etc/nginx/sites-enabled/wikipathways` and take note of the two ports that are indicated. 
+    wpvocab.ttl  gpmlvocab.ttl  PathwayOntology.ttl  DiseaseOntology.ttl
+    CellOntology.ttl  chebi-slim.ttl  ontology-void.ttl
 
-Next, use the following to identify which of the instances is live:
+They come from a configurable base URL, defaulting to this repository's raw content:
 
-    sudo docker ps | grep -w wikipathways
+    GITHUB_VOCAB=https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data
 
-If the current live instance is `wikipathways-snorql` and `wikipathways-virtuoso`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP2` for the loading of data. If the current live instance is `wikipathways-snorql2` and `wikipathways-virtuoso2`, navigate to the folder `/home/MarvinMartens/WikiPathways-EP`.
+Two consequences worth stating plainly:
 
-## Step 3 - Enter the folder called 'import'
-Within the `/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2` folder, you can find the `db` folder. The `db/data/` folder will be used to store all Turtle files and create the main WikiPathways.ttl. Move to that folder:
+- **The default branch has to stay `master`.** Renaming it to `main` would break every one of those
+  URLs, and GitHub does not redirect raw content across a branch rename. The dataset IRIs in
+  `ontology-void.ttl` embed the same path.
+- Anything merged to `master` reaches production at the next monthly reload without a further step.
 
-    cd db/data
+## `data/`
 
-If the folder is not empty (for example, it has data from last month), empty the folder.
+| File | What it is |
+|---|---|
+| `wpvocab.ttl` | The WP vocabulary, `http://vocabularies.wikipathways.org/wp#`. Hand-maintained. |
+| `gpmlvocab.ttl` | The GPML vocabulary, `http://vocabularies.wikipathways.org/gpml#`. Hand-maintained. |
+| `PathwayOntology.ttl` | Pathway Ontology (RGD), from its OBO PURL, converted with ROBOT. |
+| `DiseaseOntology.ttl` | Human Disease Ontology, from its OBO PURL, converted with ROBOT. |
+| `CellOntology.ttl` | Cell Ontology, from its OBO PURL, converted with ROBOT. |
+| `chebi-slim.ttl` | ChEBI cut down to the terms WikiPathways actually annotates with. |
+| `ontology-void.ttl` | VoID description of the four ontologies above. **Generated — do not edit.** |
 
-    rm -r *
+The four ontology files are loaded so that the ontology tags on pathways resolve to labels. When
+one of them is missing or stale the endpoint still answers, and the only visible symptom is tags
+with no `rdfs:label` — which is how Cell Ontology managed to be absent entirely for years.
 
-To download the data, go directly to [data.wikipathways.org/current/rdf](http://data.wikipathways.org/current/rdf/) or use the following commands, in which the date (in the example below the date was 2020-10-10) should be adapted to match the latest datasets:
+The ChEBI slim is produced by the eNanoMapper Slimmer from the set of ChEBI terms it looks up on
+the live endpoint, so it tracks what WikiPathways actually uses rather than all of ChEBI.
 
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-gpml.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-wp.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-20240410-rdf-authors.zip
-    wget http://data.wikipathways.org/current/rdf/wikipathways-rdf-void.ttl
-    wget -O wpvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/wpvocab.ttl
-    wget -O gpmlvocab.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/gpmlvocab.ttl
-    wget -O PathwayOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl
-    wget -O DiseaseOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl
-    wget -O CellOntology.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl
-    wget -O chebi-slim.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl
-    wget -O ontology-void.ttl https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/ontology-void.ttl
+## Workflows
 
-## Step 3 - Unzip and concatenate all files
+`.github/workflows/build-imports.yml` — 03:00 UTC on the 10th of each month, and on manual
+dispatch. Downloads the three OBO ontologies from their PURLs, converts them with ROBOT, rebuilds
+the ChEBI slim, regenerates `data/ontology-void.ttl`, and commits whatever changed to `master`.
+Note it commits most months whether or not an ontology moved, because the Slimmer writes its own
+build time into the slim.
 
-After downloading and copying all zip files into the `import` folder, the `.zip` files should be unzipped with the command:
+`.github/workflows/collect-counts.yml` — 23:00 UTC on the 13th of each month, and on manual
+dispatch. Runs the count queries against the live endpoint and appends a row to
+[`WikiPathwayscounts.tsv`](WikiPathwayscounts.tsv).
 
-    unzip \*.zip
-    
-The remaining `wpvocab.ttl`, `gpmlvocab.ttl`, `chebi-slim.ttl`, `ontology-void.ttl`, and `...rdf-void.ttl` files should be moved into one of the created folders. 
+Both push directly to `master` and declare `permissions: contents: write` for that reason.
 
-    mv *.ttl wp
+## `scripts/`
 
-Combine all separate `.ttl` files in one single file by entering the following:
-
-    find . -name *.ttl -exec cat > ../WikiPathways.ttl {} \;
-    mv ../WikiPathways.ttl .
-
-Also, be sure to copy the `ServiceDescription.ttl` in the folder and download the most recent VoID file separately, naming it `void`:
-``` 
-cp ../../ServiceDescription.ttl .
-```
-```
-wget -O void http://data.wikipathways.org/current/rdf/wikipathways-rdf-void.ttl
-```
-
-## Step 4 - Enter SQL and reset the Virtuoso service
-Enter the OpenLink Virtuoso Interactive SQL of the instance (be sure to replace `wikipathways-virtuoso` with `wikipathways-virtuoso2` to enter the right one):
-
-    sudo docker exec -i wikipathways-virtuoso isql 1111
-
-Prior to loading the new data, the Virtuoso server has to be restarted and the old data has to be removed. This is done with the following commands and could take some time:
-
-    RDF_GLOBAL_RESET();
-
-    DELETE FROM load_list WHERE ll_graph = 'http://rdf.wikipathways.org/';
-    DELETE FROM load_list WHERE ll_graph = 'servicedescription';
-    
-To check if the files are removed from the `load_list`, enter:
-
-    select * from DB.DBA.load_list;
-
-## Step 5 - Loading the prefixes and permissions
-While in the SQL, define the namespace prefixes by entering the following commands:
-
-    log_enable(2);
-    DB.DBA.XML_SET_NS_DECL ('dc', 'http://purl.org/dc/elements/1.1/',2);
-    DB.DBA.XML_SET_NS_DECL ('cas', 'https://identifiers.org/cas/',2);
-    DB.DBA.XML_SET_NS_DECL ('wprdf', 'http://rdf.wikipathways.org/',2);
-    DB.DBA.XML_SET_NS_DECL ('prov', 'http://www.w3.org/ns/prov#',2);
-    DB.DBA.XML_SET_NS_DECL ('foaf', 'http://xmlns.com/foaf/0.1/',2);
-    DB.DBA.XML_SET_NS_DECL ('hmdb', 'https://identifiers.org/hmdb/',2);
-    DB.DBA.XML_SET_NS_DECL ('freq', 'http://purl.org/cld/freq/',2);
-    DB.DBA.XML_SET_NS_DECL ('pubmed', 'http://www.ncbi.nlm.nih.gov/pubmed/',2);
-    DB.DBA.XML_SET_NS_DECL ('wp', 'http://vocabularies.wikipathways.org/wp#',2);
-    DB.DBA.XML_SET_NS_DECL ('void', 'http://rdfs.org/ns/void#',2);
-    DB.DBA.XML_SET_NS_DECL ('biopax', 'http://www.biopax.org/release/biopax-level3.owl#',2);
-    DB.DBA.XML_SET_NS_DECL ('dcterms', 'http://purl.org/dc/terms/',2);
-    DB.DBA.XML_SET_NS_DECL ('rdfs', 'http://www.w3.org/2000/01/rdf-schema#',2);
-    DB.DBA.XML_SET_NS_DECL ('pav', 'http://purl.org/pav/',2);
-    DB.DBA.XML_SET_NS_DECL ('ncbigene', 'https://identifiers.org/ncbigene/',2);
-    DB.DBA.XML_SET_NS_DECL ('xsd', 'http://www.w3.org/2001/XMLSchema#',2);
-    DB.DBA.XML_SET_NS_DECL ('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',2);
-    DB.DBA.XML_SET_NS_DECL ('gpml', 'http://vocabularies.wikipathways.org/gpml#',2);
-    DB.DBA.XML_SET_NS_DECL ('skos', 'http://www.w3.org/2004/02/skos/core#',2);
-    DB.DBA.XML_SET_NS_DECL ('owl', 'http://www.w3.org/2002/07/owl#',2);
-    DB.DBA.XML_SET_NS_DECL ('efo', 'http://www.ebi.ac.uk/efo/',2);
-    DB.DBA.XML_SET_NS_DECL ('xml', 'http://www.w3.org/XML/1998/namespace',2);
-    DB.DBA.XML_SET_NS_DECL ('wiki', 'http://sparql.wikipathways.org/',2);
-    DB.DBA.XML_SET_NS_DECL ('cur', 'http://vocabularies.wikipathways.org/wp#Curation:',2);
-    
-Define the permissions to use the SPARQL endpoint with:
-
-    log_enable(1);
-    grant select on "DB.DBA.SPARQL_SINV_2" to "SPARQL";
-    grant execute on "DB.DBA.SPARQL_SINV_IMP" to "SPARQL";
-
-## Step 6 - Load the data and run the RDF loader
-To load the `WikiPathways.ttl` file and run the RDF loader, execute the following commands (this might take a while):
-
-    ld_dir('data', 'WikiPathways.ttl', 'http://rdf.wikipathways.org/');
-    ld_dir('data', 'ServiceDescription.ttl', 'servicedescription');
-    rdf_loader_run();
-
-To check the status of the loaded data, the `ll_status` in the `load_list` should be 2. This step will also indicate whether the Turtle file is correct or causes an error in Virtuoso. Do this using:
-
-    select * from DB.DBA.load_list;
-
-## Step 7 - Quit the SQL
-To quit the SQL:
-
-    quit;
-
-## Step 8 - Move the void file to /snorql-extended./well-known
-Move the void file to the `.well-known` folder:
-
-    cp void ../../../WikiPathways-EP/snorql-extended/.well-known/
-
-Quit the exec mode:
-    
-    exit
-
-## Step 9 - Test if everything went well
-
-The last step of this protocol is testing whether the loading of new data worked. For that, visit the WikiPathways SNORQL UI through the `[SERVER IP]:[PORT]` where the port refers to the `wikipathways-snorql` or `wikipathways-snorql2` and force refresh the page (Ctrl + F5). Next, run the SPARQL queries from the metadata folder in the Query panel. Click the `.rq` files and click `Run query`. The testing comprises three steps:
-
-#### Metadata 
-
-Use the next query to validate that the right dataset is loaded. It should normally indicate the 10th of the current month, assuming this protocol is executed after the 10th day of the month. For that, select the `A. Metadata/metadata.rq` query from the Query panel and run it.
-
-### Counts of data
-
-The following set of SPARQL queries involves the counts of the dataset for various entities. To compare with previous versions, be sure to add the resulting counts in the [WikiPathwayscounts.tsv](https://github.com/marvinm2/WikiPathwaysloader/blob/master/WikiPathwayscounts.tsv) spreadsheet by adding a new line to it. Note when the numbers go down, or are drastically different from the previous months. That could indicate potential issues in the RDF. These SPARQL queries are located in the `A. Metadata/datacounts` folder in the Query panel
-
-- Count of Pathways Loaded 
-- Count total amount of DataNodes 
-- Count of GeneProduct Nodes 
-- Count of Protein Nodes 
-- Count of Metabolites 
-- Count of all Interactions in WikiPathways 
-- Count of all signaling pathways in WikiPathways 
-
-
-### Federated SPARQL query 
-Make sure to test a federated SPARQL query to make sure federated queries are running. This one takes slightly longer than the other test queries. For example, with the following query:
-
-```sparql
-PREFIX aopo:	<http://aopkb.org/aop_ontology#> 
-PREFIX cheminf:	<http://semanticscience.org/resource/CHEMINF_> 
-
-SELECT DISTINCT (str(?title) as ?pathwayName) ?chemical ?ChEBI ?ChemicalName  ?mappedid ?LinkedStressor 
-
-WHERE {
-   ?pathway a wp:Pathway ; wp:organismName "Homo sapiens"; dcterms:identifier ?WPID ; dc:title ?title . 
-   ?chemical a wp:Metabolite; dcterms:isPartOf ?pathway; wp:bdbChEBI ?mappedid . 
-   SERVICE <https://aopwiki.rdf.bigcat-bioinformatics.org/sparql/>{
-    ?mappedid a cheminf:000407; cheminf:000407 ?ChEBI .
-    ?cheLook a cheminf:000000; dc:title ?ChemicalName ; dcterms:isPartOf ?LinkedStressor ;  skos:exactMatch ?mappedid .
-   }}
-limit 1
-```
-
-Also accessible with [this permalink](https://bit.ly/443CJBl)
-
-If the SNORQL UI does not work directly with the federated query, try in the SPARQL endpoint [sparql.wikipathways.org/sparql/](sparql.wikipathways.org/sparql/)
-
-### Final step: change the live instance to the right ports and restart nginx
-Update the `/etc/nginx/sites-enabled/wikipathways` file to have the correct ports of the updated instance:
-
-    sudo nano /etc/nginx/sites-enabled/wikipathways
-
-Then, restart nginx
-
-    sudo service nginx restart
-
-## The ontology imports in `data/`
-
-Four ontology files are loaded alongside the WikiPathways RDF so that the ontology tags on
-pathways resolve to labels: `PathwayOntology.ttl`, `DiseaseOntology.ttl`, `CellOntology.ttl`
-and `chebi-slim.ttl`. They are built by the `Build imports` workflow
-(`.github/workflows/build-imports.yml`), which runs at 03:00 UTC on the 10th of each month and
-can also be dispatched by hand. The first three come from their OBO PURLs and are converted with
-ROBOT; the ChEBI slim is cut down by the eNanoMapper Slimmer to only the ChEBI terms
-WikiPathways annotates with, which it looks up from the live endpoint.
-
-`data/ontology-void.ttl` is the VoID description of those four datasets — version, release date,
-license, upstream source, the tool that converted it, triple and class counts. It is
-**generated, not edited**: the same workflow regenerates it with
-`scripts/build_ontology_void.py` after the ontologies are rebuilt, reading the facts out of the
-Turtle files themselves so the description cannot drift away from what is actually loaded. To
-rebuild it locally:
+`build_ontology_void.py` — generates `data/ontology-void.ttl` from the ontology Turtle files
+themselves: version, release date, licence, upstream source, the tool that converted it, and
+triple and class counts. This replaced a hand-maintained file that had drifted badly, still
+naming Jenkins jobs that no longer existed. Reading the facts out of the data means it cannot
+drift again.
 
     pip install 'rdflib>=7,<8'
     python3 scripts/build_ontology_void.py
 
-The output is a pure function of the input files, so re-running it without an ontology change
-leaves the file untouched. `--check` verifies the committed file matches the data without
-writing anything.
+The output is a pure function of its inputs — no wall-clock timestamps — so re-running it without
+an ontology change leaves the file byte-identical, which is what makes the workflow's
+"commit only if something changed" guard work. `--check` verifies the committed file matches the
+data without writing.
 
-## In case of SPARQL endpoint down
+`collect_counts.py` — runs the queries in `queries/` against the endpoint and maintains
+`WikiPathwayscounts.tsv` in date order. Driven by `collect-counts.yml`.
 
-In case the SPARQL endpoint is down, perform the following steps:
-### Log into the server and check which of the instances should be active
-See Step 2
-### Check if the docker container with the Virtuoso Endpoint is running or has stopped. 
-The Docker container should be called `wikipathways-virtuoso`. To check for running containers:
+`void-rewrite.sql` — Virtuoso rewrite rule that serves `/.well-known/void` by CONSTRUCTing the
+VoID out of the store, rather than by copying a file into a document root as the pre-2026 hosting
+did. Apply it to **both** blue-green instances: the rule lives in Virtuoso's own SQL tables and
+survives `RDF_GLOBAL_RESET()` and restarts, but a rule on only one instance silently disappears at
+the next cutover. The file's own comments carry the rest, including two traps that cost a day.
 
-    sudo docker ps | grep -w wikipathways
+## `queries/`
 
-To check for a stopped container:
+The count and metadata queries used to sanity-check a load: pathways, data nodes, gene products,
+proteins, metabolites, interactions, signalling pathways, and the dataset metadata. They carry no
+`PREFIX` lines because the endpoint declares its namespaces server-side.
 
-    sudo docker ps -a | grep -w wikipathways
+`metadata.rq` should report the current month's release. A sharp drop in any count, or a number
+that moves when it should not, means look at the RDF before switching the endpoint over.
 
-### If the container is not running
-Enter the correct folder (`/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2`). Launch the service with:
+Worth also running a federated query by hand after a load, since nothing else exercises that path:
 
-    sudo docker-compose up -d
-
-### If the container is running
-Try to log into the container in the exec mode (Step 4). If you get the following error message `'*** Error S2801: [Virtuoso Driver]CL033: Connect failed to 1111 = 1111. at line 0 of Top-Level:'`, do the following: Enter the correct folder (`/home/MarvinMartens/WikiPathways-EP` or `/home/MarvinMartens/WikiPathways-EP2`). Restart the docker container with the commands:
+```sparql
+SELECT DISTINCT (str(?title) as ?pathwayName) ?ChEBI ?ChemicalName ?LinkedStressor
+WHERE {
+  ?pathway a wp:Pathway ; wp:organismName "Homo sapiens" ; dc:title ?title .
+  ?chemical a wp:Metabolite ; dcterms:isPartOf ?pathway ; wp:bdbChEBI ?mappedid .
+  SERVICE <https://aopwiki.rdf.bigcat-bioinformatics.org/sparql/> {
+    ?mappedid a cheminf:000407 ; cheminf:000407 ?ChEBI .
+    ?cheLook a cheminf:000000 ; dc:title ?ChemicalName ;
+             dcterms:isPartOf ?LinkedStressor ; skos:exactMatch ?mappedid .
+  }
+} LIMIT 1
 ```
-sudo docker-compose down
-```
-```
-sudo docker compose up -d
-```
-This should resolve the issue. 
+
+## How a monthly load runs
+
+The endpoint runs on the Translational Genomics Docker Swarm cluster, in a blue-green pair of
+Virtuoso instances behind Traefik. A load never touches the live instance: it fills the offline
+one, verifies it, and an operator flips which instance serves once the numbers look right. Rolling
+back is flipping it the other way, and the previous release stays loaded until the next cycle
+overwrites it.
+
+There is a scheduled path — a monthly cron job on the cluster that does the whole load and then
+stops short of the switch — and a manual path for one-off loads. Both read this repository's
+`data/` directory, and both concatenate it with the release zips into a single Turtle file loaded
+into the graph `http://rdf.wikipathways.org/`.
+
+The operational detail — host names, service names, the switch script, the rewrite rules, storage
+paths — lives in the cluster's own documentation, which is maintained alongside the running
+services and is the authoritative source. It is deliberately not duplicated here, because a
+second copy would drift and there would be no way to tell which was right.
+
+Before 2026 the endpoint ran on a single host with nginx and docker-compose, and earlier still on
+OpenShift. Both arrangements are gone; the instructions for them are in this file's git history if
+anyone ever needs them.

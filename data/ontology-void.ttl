@@ -14,16 +14,16 @@
 @prefix void:    <http://rdfs.org/ns/void#> .
 @prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
 
-<https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/ontology-void.ttl>
+<https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/ontology-void.ttl>
         a                  void:DatasetDescription ;
         dcterms:title      "VoID description of the ontologies imported into the WikiPathways SPARQL endpoint"^^xsd:string ;
-        dcterms:source     <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
-        foaf:topic         <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl> ,
-                           <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl> ,
-                           <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl> ,
-                           <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl> .
+        dcterms:source     <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        foaf:topic         <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/PathwayOntology.ttl> ,
+                           <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/DiseaseOntology.ttl> ,
+                           <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/CellOntology.ttl> ,
+                           <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/chebi-slim.ttl> .
 
-<https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl>
+<https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/PathwayOntology.ttl>
         a                           void:Dataset ;
         dcterms:title               "Pathway Ontology"^^xsd:string ;
         dcterms:description         "The Pathway Ontology, a controlled vocabulary of pathway types, converted to RDF from the OWL release published at the OBO PURL."^^xsd:string ;
@@ -35,10 +35,10 @@
         pav:version                 "2026-05-16"^^xsd:string ;
         owl:versionIRI              <http://purl.obolibrary.org/obo/pw/releases/2026-05-16/pw.owl> ;
         pav:importedFrom            <http://purl.obolibrary.org/obo/pw.owl> ;
-        pav:importedBy              <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
-        pav:createdBy               <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:importedBy              <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:createdBy               <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
         pav:createdWith             <https://github.com/ontodev/robot/releases/tag/v1.9.0> ;
-        void:dataDump               <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/PathwayOntology.ttl> ;
+        void:dataDump               <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/PathwayOntology.ttl> ;
         void:feature                <http://www.w3.org/ns/formats/Turtle> ;
         void:triples                38600 ;
         void:classes                2760 ;
@@ -48,7 +48,7 @@
         dcat:landingPage            <https://obofoundry.org/ontology/pw.html> ;
         foaf:homepage               <https://obofoundry.org/ontology/pw.html> .
 
-<https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl>
+<https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/DiseaseOntology.ttl>
         a                           void:Dataset ;
         dcterms:title               "Human Disease Ontology"^^xsd:string ;
         dcterms:description         "The Disease Ontology has been developed as a standardized ontology for human disease with the purpose of providing the biomedical community with consistent, reusable and sustainable descriptions of human disease terms, phenotype characteristics and related medical vocabulary disease concepts."^^xsd:string ;
@@ -58,10 +58,10 @@
         pav:version                 "2026-07-31"^^xsd:string ;
         owl:versionIRI              <http://purl.obolibrary.org/obo/doid/releases/2026-07-31/doid.owl> ;
         pav:importedFrom            <http://purl.obolibrary.org/obo/doid.owl> ;
-        pav:importedBy              <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
-        pav:createdBy               <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:importedBy              <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:createdBy               <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
         pav:createdWith             <https://github.com/ontodev/robot/releases/tag/v1.9.0> ;
-        void:dataDump               <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/DiseaseOntology.ttl> ;
+        void:dataDump               <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/DiseaseOntology.ttl> ;
         void:feature                <http://www.w3.org/ns/formats/Turtle> ;
         void:triples                307411 ;
         void:classes                15898 ;
@@ -71,7 +71,7 @@
         dcat:landingPage            <https://obofoundry.org/ontology/doid.html> ;
         foaf:homepage               <https://obofoundry.org/ontology/doid.html> .
 
-<https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl>
+<https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/CellOntology.ttl>
         a                           void:Dataset ;
         dcterms:title               "Cell Ontology"^^xsd:string ;
         dcterms:description         "An ontology of cell types. The release merges its imports, so the class count covers the GO, UBERON, PATO and PR terms CL reuses as well as CL's own."^^xsd:string ;
@@ -81,10 +81,10 @@
         pav:version                 "2026-06-08"^^xsd:string ;
         owl:versionIRI              <http://purl.obolibrary.org/obo/cl/releases/2026-06-08/cl.owl> ;
         pav:importedFrom            <http://purl.obolibrary.org/obo/cl.owl> ;
-        pav:importedBy              <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
-        pav:createdBy               <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:importedBy              <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:createdBy               <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
         pav:createdWith             <https://github.com/ontodev/robot/releases/tag/v1.9.0> ;
-        void:dataDump               <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/CellOntology.ttl> ;
+        void:dataDump               <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/CellOntology.ttl> ;
         void:feature                <http://www.w3.org/ns/formats/Turtle> ;
         void:triples                783998 ;
         void:classes                33263 ;
@@ -94,7 +94,7 @@
         dcat:landingPage            <https://obofoundry.org/ontology/cl.html> ;
         foaf:homepage               <https://obofoundry.org/ontology/cl.html> .
 
-<https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl>
+<https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/chebi-slim.ttl>
         a                           void:Dataset ;
         dcterms:title               "ChEBI Ontology (WikiPathways slim)"^^xsd:string ;
         dcterms:description         "Chemical Entities of Biological Interest, also known as ChEBI, is a chemical database and ontology of molecular entities focused on 'small' chemical compounds, that is part of the Open Biomedical Ontologies (OBO) effort at the European Bioinformatics Institute (EBI). Slimmed with the eNanoMapper Slimmer to the ChEBI terms that WikiPathways actually annotates with, queried live from the endpoint (wp:bdbChEBI), rather than the full ChEBI release."^^xsd:string ;
@@ -103,12 +103,12 @@
         dcterms:issued              "2026-07-07"^^xsd:date ;
         pav:version                 "253"^^xsd:string ;
         pav:importedFrom            <http://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.obo> ;
-        pav:importedBy              <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
-        pav:createdBy               <https://github.com/marvinm2/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:importedBy              <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
+        pav:createdBy               <https://github.com/wikipathways/WikiPathwaysLoader/blob/master/.github/workflows/build-imports.yml> ;
         pav:createdWith             <https://github.com/enanomapper/slimmer/releases/tag/v1.0.1> ;
         pav:createdWith             <https://github.com/ontodev/robot/releases/tag/v1.9.0> ;
         pav:derivedFrom             <http://purl.enanomapper.net/onto/external/chebi-slim.owl> ;
-        void:dataDump               <https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data/chebi-slim.ttl> ;
+        void:dataDump               <https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data/chebi-slim.ttl> ;
         void:feature                <http://www.w3.org/ns/formats/Turtle> ;
         void:triples                60768 ;
         void:classes                7291 ;
