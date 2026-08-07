@@ -50,7 +50,7 @@
 -- the real, and smaller, advantage. Both forms are release-date independent.
 --
 -- After the next monthly reload this will also pick up the ontology datasets added by
--- wikipathways/GPML2RDF PR #28, so the served document will stop being byte-equal to strato1's.
+-- PR #28 in this repository, so the served document will stop being byte-equal to strato1's.
 -- That is intended — it is a superset, and strato1 has no ontology VoID at all.
 --
 -- One rule, no accept_pattern, no format. Virtuoso's URR_ACCEPT_PATTERN does not behave as

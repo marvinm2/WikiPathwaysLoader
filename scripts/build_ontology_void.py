@@ -31,8 +31,11 @@ OBO = "http://purl.obolibrary.org/obo/"
 DC11 = Namespace("http://purl.org/dc/elements/1.1/")
 OBOINOWL = Namespace("http://www.geneontology.org/formats/oboInOwl#")
 
-RAW_BASE = "https://raw.githubusercontent.com/marvinm2/WikiPathwaysLoader/master/data"
-WORKFLOW = ("https://github.com/marvinm2/WikiPathwaysLoader/blob/master/"
+# These two constants are the source of every dataset IRI in the generated file,
+# so they are also the reason the default branch has to stay `master`: raw URLs
+# get no redirect when a branch is renamed.
+RAW_BASE = "https://raw.githubusercontent.com/wikipathways/WikiPathwaysLoader/master/data"
+WORKFLOW = ("https://github.com/wikipathways/WikiPathwaysLoader/blob/master/"
             ".github/workflows/build-imports.yml")
 ROBOT = "https://github.com/ontodev/robot/releases/tag/v1.9.0"
 SLIMMER = "https://github.com/enanomapper/slimmer/releases/tag/v1.0.1"
