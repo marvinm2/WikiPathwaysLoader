@@ -15,7 +15,7 @@
                                                             <http://purl.org/pav/importedFrom> "http://ftp.ebi.ac.uk/pub/databases/chebi/ontology/chebi_lite.obo" ;
                                                             <http://www.geneontology.org/formats/oboInOwl#auto-generated-by> "Slimmer" ;
                                                             <http://www.geneontology.org/formats/oboInOwl#date> "07:07:2026 17:53" ,
-                                                                                                                "2026-08-05 20:34:58" ;
+                                                                                                                "2026-08-10 04:31:29" ;
                                                             <http://www.geneontology.org/formats/oboInOwl#default-namespace> "chebi_ontology" ;
                                                             <http://www.geneontology.org/formats/oboInOwl#hasOBOFormatVersion> "1.2" ;
                                                             <http://www.geneontology.org/formats/oboInOwl#saved-by> "chebi" ;
